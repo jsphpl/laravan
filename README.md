@@ -76,6 +76,8 @@ apps:
 
 ### 6. Provision
 
+**Note: When using "letsencrypt" as TLS certificate prodiver, all domains listed under `canonical` or `redirects` must be mapped to your IP address (resolvable via public DNS) before you can successfully provision your server.**
+
 ```bash
 ansible-playbook provision.yml -e env=development
 ```
