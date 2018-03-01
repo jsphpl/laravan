@@ -101,9 +101,13 @@ ansible-playbook provision.yml -e env=development
 
 ### 9. Deploy
 
+Again, on the local machine, run the following command to fetch your app from the git repository, install composer dependencies and run the migrations.
+
 ```bash
 ansible-playbook deploy.yml -e env=development -e app_name=example
 ```
+
+*Note: Replace the `example` in `app_name=example` with the key that your app is listed under in the `apps` object in `group_vars/{env}/apps.yml`*
 
 ## Credits
 
