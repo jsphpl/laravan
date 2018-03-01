@@ -28,7 +28,7 @@ Ansible needs to be installed on your **local machine** from which you're going 
 
 Boot up a fresh Ubuntu 16.04 (virtual) machine. Set up ssh keys and make sure you can log in as root from your local machine.
 
-The target machine needs to have `python` installed in order to be provisioned by Ansible.
+The target machine needs to have `python` (v2) installed in order to be provisioned by Ansible.
 
 #### Vagrant (optional)
 
