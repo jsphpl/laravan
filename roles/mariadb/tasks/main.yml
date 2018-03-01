@@ -58,3 +58,9 @@
   mysql_db:
     name: test
     state: absent
+
+- name: Restart MySQL Server
+  service:
+    name: mysql
+    state: restarted
+    enabled: true
