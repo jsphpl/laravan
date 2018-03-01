@@ -22,7 +22,7 @@ It also brings some neat, optional stuff:
 
 ### 1. Install Ansible
 
-Ansible needs to be installed on your **local machine** from which you're going to provision your servers and deploy your Laravel apps. Install instructions: [http://docs.ansible.com/ansible/2.3/intro_installation.html](http://docs.ansible.com/ansible/2.3/intro_installation.html)
+Ansible needs to be installed on your **local machine** from which you're going to provision your servers and deploy your Laravel apps. Install instructions: [http://docs.ansible.com/ansible/2.4/intro_installation.html](http://docs.ansible.com/ansible/2.4/intro_installation.html)
 
 ### 2. Prepare Server
 
