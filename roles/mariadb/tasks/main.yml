@@ -44,6 +44,13 @@
     group: root
     mode: 0600
 
+- name: Copy config template for mb4 strings
+  template:
+    src: mb4strings.cnf.j2
+    dest: /etc/mysql/conf.d/mb4strings.cnf
+    owner: root
+    group: root
+
 - name: Delete anonymous MySQL server users
   mysql_user:
     user: ""
