@@ -85,7 +85,11 @@ In order to prevent your production secrets from ending up as plain text in your
 2. Encrypt your vault: `ansible-vault encrypt group_vars/production/vault.yml`
 3. **Never again decrypt the vault!**. Use `ansible-vault view <path>` or `ansible-vault edit <path>` to open the vault file. This reduces the risk of the vault ending up plain text in your version control.
 
-### 7. Provision
+### 7. Set ssh keys for `web` user
+
+In `group_vars/all/users.yml`, make sure to add a valid ssh public key for the `web` user. Either use the `lookup()` syntax to read a local file, or specify a http(s) url for remotely hosted ssh keys (eg. github).
+
+### 8. Provision
 
 **Note: When using "letsencrypt" as TLS certificate provider, all domains listed under `canonical` or `redirects` must be mapped to your IP address (resolvable via public DNS) before you can successfully provision your server.**
 
@@ -95,7 +99,7 @@ On your local machine, run the following command, replacing `development` with t
 ansible-playbook provision.yml -e env=development
 ```
 
-### 8. Deploy
+### 9. Deploy
 
 ```bash
 ansible-playbook deploy.yml -e env=development -e app_name=example

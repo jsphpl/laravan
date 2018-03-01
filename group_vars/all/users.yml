@@ -4,7 +4,7 @@ users:
     groups:
       - "{{ web_group }}"
     keys:
-      # - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
       # - https://github.com/jsphpl.keys
 
 ansible_user: root
