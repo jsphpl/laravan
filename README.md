@@ -30,7 +30,7 @@ Boot up a fresh Ubuntu 16.04 (virtual) machine. Set up ssh keys and make sure yo
 
 The target machine needs to have `python` installed in order to be provisioned by Ansible.
 
-#### Vagrant
+#### Vagrant (optional)
 
 A Vagrantfile is provided with laravan, so you can fire up a fresh local vm by just stating `vagrant up` from your laravan directory. You will still need to set up your ssh keys for the root user of the Vagrant box.
 
