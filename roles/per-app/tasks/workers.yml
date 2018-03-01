@@ -1,4 +1,9 @@
 ---
+- name: Create supervisor config directory
+  file:
+    path: "/etc/supervisor/conf.d/"
+    state: directory
+
 - name: Set up queue workers
   template:
     src: queue.conf
