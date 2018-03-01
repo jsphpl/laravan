@@ -1,6 +1,6 @@
 ---
 apps:
-  laravan-com:
+  laravan_com:
     hosts:
       - canonical: laravan.com
         redirects:
