@@ -37,7 +37,7 @@ A Vagrantfile is provided with laravan, so you can fire up a fresh local vm by j
 ### 3. Install Laravan
 
 ```bash
-git clone {{ repo_url }}
+git clone https://github.com/jsphpl/laravan
 cd laravan
 ./setup.sh
 ```
