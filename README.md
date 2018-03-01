@@ -109,6 +109,8 @@ ansible-playbook deploy.yml -e env=development -e app_name=example
 
 *Note: Replace the `example` in `app_name=example` with the key that your app is listed under in the `apps` object in `group_vars/{env}/apps.yml`*
 
+In case deployment fails with an error message indicating a lack of access right to the git repository, make sure the ssh key configured in step (7.) is authorized with your git. There could also be a problem with with ssh agent-forwarding, which you can troubleshoot using this guide: [https://developer.github.com/v3/guides/using-ssh-agent-forwarding/](https://developer.github.com/v3/guides/using-ssh-agent-forwarding/).
+
 ## Credits
 
 Credits to the awesome [Trellis](https://github.com/roots/trellis) project, which heavily inspired me to create laravan and from which i also took some code.
