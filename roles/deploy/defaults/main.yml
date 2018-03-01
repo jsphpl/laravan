@@ -1,0 +1,12 @@
+---
+laravel_shared_folders:
+  - storage/app
+  - storage/app/public
+  - storage/framework
+  - storage/framework/cache
+  - storage/framework/sessions
+  - storage/framework/views
+
+laravel_shared_symlinks:
+  - { path: "storage", src: "storage" }
+  - { path: "public/storage", src: "storage/app/public" }

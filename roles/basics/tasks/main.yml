@@ -1,0 +1,6 @@
+---
+- include: ensure-os-version.yml
+- include: essential-packages.yml
+- include: locale.yml
+- include: users.yml
+- include: unattended-upgrades.yml

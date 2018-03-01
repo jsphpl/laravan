@@ -1,0 +1,5 @@
+server {
+  listen 80;
+  server_name{% for item in item.item.value.hosts %} {{ item.canonical }}{% for redirect in item.redirects | default([]) %} {{ redirect }}{% endfor %}{% endfor %};
+  include acme-challenge-location.conf;
+}

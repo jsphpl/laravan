@@ -1,0 +1,40 @@
+---
+- name: Make sure UFW is installed
+  apt:
+    name: ufw
+    state: present
+  tags: firewall
+
+- name: Allow SSH and HTTP(S) incoming traffic
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 22
+    - 80
+    - 443
+  tags: firewall
+
+- block:
+  - name: Open additional ports
+    ufw:
+      rule: allow
+      port: "{{ item }}"
+      proto: tcp
+    with_items: "{{ open_ports }}"
+  when: "{{ len(open_ports) > 0 }}"
+  tags: firewall
+
+- block:
+  - name: Enable UFW
+    ufw:
+      state: enabled
+      policy: deny
+  - name: Ensure UFW is started now and on boot
+    service:
+      name: ufw
+      state: started
+      enabled: yes
+  tags: firewall
+

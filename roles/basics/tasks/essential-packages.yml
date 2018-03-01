@@ -1,0 +1,19 @@
+---
+- name: Refresh package lists
+  apt:
+    update_cache: yes
+  tags: essential-packages
+
+- name: Install some essential packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - build-essential
+  - curl
+  - vim
+  - git-core
+  - python-mysqldb
+  - python-pycurl
+  - python-software-properties
+  tags: essential-packages

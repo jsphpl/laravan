@@ -1,0 +1,14 @@
+---
+users:
+  - name: "{{ web_user }}"
+    groups:
+      - "{{ web_group }}"
+    keys:
+      # - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      # - https://github.com/jsphpl.keys
+
+ansible_user: root
+web_user: web
+web_group: www-data
+web_sudoers:
+  - "/usr/sbin/service php7.0-fpm *"

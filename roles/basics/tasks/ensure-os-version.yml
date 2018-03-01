@@ -1,0 +1,6 @@
+---
+- name: Make sure we're on Ubuntu 16.04 Xenial
+  fail:
+    msg: Laravan is designed to run on Ubuntu 16.04 only.
+  when: ansible_distribution_release != 'xenial'
+  tags: ensure-os-version

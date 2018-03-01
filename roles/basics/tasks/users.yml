@@ -1,0 +1,9 @@
+---
+- name: Create some users
+  user:
+    name: "{{ item.name }}"
+    group: "{{ item.group }}"
+    state: present
+    shell: /bin/bash
+  with_items:
+    - { name: web, group: www-data }

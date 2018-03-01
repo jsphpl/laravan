@@ -1,0 +1,33 @@
+---
+- name: Provision servers in {{ env }}
+  hosts: "{{ env }}"
+  become: yes
+  roles:
+    - role: basics
+      tags: basics
+    - role: users
+      tags: users
+    - role: geerlingguy.ntp
+      tags: [basics, ntp]
+    - role: kamaln7.swapfile
+      tags: [basics, swapfile]
+    - role: network-basics
+      tags: network-basics
+    - role: mariadb
+      tags: mariadb
+    - role: php
+      tags: php
+    - role: nginx
+      tags: nginx
+    - role: geerlingguy.composer
+      tags: composer
+    - role: letsencrypt
+      tags: letsencrypt
+    - role: per-app
+      tags: per-app
+    - role: logrotate
+      tags: [logrotate, per-app]
+    - role: queue
+      tags: queue
+    - role: backup
+      tags: backup

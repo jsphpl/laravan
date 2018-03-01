@@ -1,0 +1,2 @@
+mariadb_binary_logging_disabled: true
+mysql_root_user: root

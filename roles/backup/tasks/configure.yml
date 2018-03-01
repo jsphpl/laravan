@@ -1,0 +1,42 @@
+---
+
+- name: Create backup config directories
+  file:
+    path:  "{{ item }}"
+    owner: "{{ backup_setup.user }}"
+    group: "{{ backup_setup.user }}"
+    state: directory
+  with_items:
+    - "{{ backup_setup.config_dir }}"
+    - "{{ backup_setup.config_dir }}/models"
+    - "{{ backup_setup.tmp_dir }}"
+    - "{{ backup_setup.data_dir }}"
+    - "{{ backup_setup.log_dir }}"
+
+- name: Install global backup config
+  template:
+    src:   config.rb.j2
+    dest:  "{{ backup_setup.config_dir }}/config.rb"
+    owner: "{{ backup_setup.user }}"
+    group: "{{ backup_setup.user }}"
+    mode:  0600
+
+- name: Configure individual backup models
+  template:
+    src:   model.rb.j2
+    dest:  "{{ backup_setup.config_dir }}/models/{{ item.key.replace('.', '_') }}.rb"
+    owner: "{{ backup_setup.user }}"
+    group: "{{ backup_setup.user }}"
+    mode:  0600
+  with_dict: "{{ apps }}"
+  when: "'backup' in item.value and item.value.backup.enabled"
+
+- name: Configure cron to run our backups daily
+  template:
+    src:   cron.j2
+    dest:  "/etc/cron.daily/backup-{{ item.key.replace('.', '_') }}"
+    owner: "{{ backup_setup.user }}"
+    group: "{{ backup_setup.user }}"
+    mode:  0700
+  with_dict: "{{ apps }}"
+  when: "'backup' in item.value and item.value.backup.enabled"

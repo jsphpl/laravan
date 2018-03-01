@@ -1,0 +1,37 @@
+---
+- name: Make sure Supervisor is installed
+  apt:
+    name: supervisor
+    state: present
+
+- name: Start and enable Supervisor via systemctl as workaround for a bug in the 16.04 supervisor package
+  shell: "{{ item }}"
+  with_items:
+    - systemctl enable supervisor
+    - systemctl start supervisor
+
+- name: Make sure Supervisor is being run
+  service:
+    name: supervisor
+    state: started
+    enabled: yes
+
+- name: Install Beanstalkd memory queue
+  apt:
+    name: beanstalkd
+    state: present
+  when: enable_beanstalkd
+
+- name: Make sure Beanstalkd is being run
+  service:
+    name: beanstalkd
+    state: started
+    enabled: yes
+  when: enable_beanstalkd
+
+- name: Make sure Beanstalkd is not being run unnecessarily
+  service:
+    name: beanstalkd
+    state: stopped
+    enabled: no
+  when: not enable_beanstalkd

@@ -1,0 +1,13 @@
+---
+mysql_root_password: yourMySqlRootPassword
+
+vault:
+  app_key: yourGeneratedAppKey
+  db_password: yourDbPassword
+  mail_username: yourMailUsername
+  mail_password: yourMailPassword
+
+  s3:
+    access_key_id:  s3AccessKeyId
+    secret_access_key: s3SecretAccessKey
+

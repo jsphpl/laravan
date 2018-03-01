@@ -1,0 +1,60 @@
+---
+- name: Add Nginx PPA
+  apt_repository:
+    repo: "ppa:nginx/development"
+    update_cache: yes
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    force: yes
+
+- name: Create SSL directory
+  file:
+    mode: 0700
+    path: "{{ nginx_path }}/ssl"
+    state: directory
+
+- name: Generate strong unique Diffie-Hellman group.
+  command: openssl dhparam -out dhparams.pem 2048
+  args:
+    chdir: "{{ nginx_path }}/ssl"
+    creates: "{{ nginx_path }}/ssl/dhparams.pem"
+  notify: reload nginx
+  tags: [diffie-hellman]
+
+- name: Grab h5bp/server-configs-nginx
+  git:
+    repo: "https://github.com/h5bp/server-configs-nginx.git"
+    dest: "{{ nginx_path }}/h5bp-server-configs"
+    version: 82181a672a7c26f9bc8744fead80318d8a2520b1
+    force: yes
+
+- name: Move h5bp configs
+  command: cp -R {{ nginx_path }}/h5bp-server-configs/h5bp {{ nginx_path }}/h5bp
+  args:
+    creates: "{{ nginx_path }}/h5bp/"
+
+- name: Create nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_path }}/nginx.conf"
+  notify: reload nginx
+
+- name: Disable default server
+  file:
+    path: "{{ nginx_path }}/sites-enabled/default"
+    state: absent
+  notify: reload nginx
+
+- name: Enable better default site to drop unknown requests
+  command: cp {{ nginx_path }}/h5bp-server-configs/sites-available/no-default {{ nginx_path }}/sites-enabled/no-default.conf
+  args:
+    creates: "{{ nginx_path }}/sites-enabled/no-default.conf"
+  notify: reload nginx
+
+- name: Create base Laravan config
+  template:
+    src: laravan.conf.j2
+    dest: "{{ nginx_path }}/laravan.conf"

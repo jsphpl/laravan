@@ -1,0 +1,6 @@
+---
+- name: Restart Queue Workers
+  supervisorctl:
+    name: "{{ app_name }}-{{ item.0 + 1 }}"
+    state: restarted
+  with_indexed_items: "{{ current_app.workers | default([]) }}"

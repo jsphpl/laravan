@@ -1,0 +1,9 @@
+---
+- name: "Deploy {{ app_name }} to {{ env }}"
+  hosts: "{{ env }}"
+  remote_user: "{{ web_user }}"
+  vars:
+    current_app: "{{ apps[app_name] }}"
+  roles:
+    - role: deploy
+      tags: deploy

@@ -1,0 +1,10 @@
+---
+- include: database.yml
+  when: "{{ item.value.database | default(True) }}"
+- include: self-signed-certificate.yml
+- include: folders.yml
+- include: nginx.yml
+- include: cron.yml
+  when: "{{ item.value.is_laravel | default(True) }}"
+- include: workers.yml
+- include: reload-nginx.yml

@@ -1,0 +1,6 @@
+---
+- name: Finalize the deploy, removing the unfinished file and switching the symlink
+  deploy_helper:
+    path: "{{ webroot }}/{{ app_name }}"
+    release: "{{ deploy_helper.new_release }}"
+    state: finalize

@@ -1,0 +1,33 @@
+---
+
+- name: Make sure ruby is installed
+  apt:
+    pkg:              "{{ item }}"
+    state:            installed
+    update_cache:     yes
+    cache_valid_time: 3600
+  with_items:
+    - ruby
+    - ruby-dev
+
+- name: Make sure the build dependencies for our gem are installed
+  apt:
+    pkg:              "{{ item }}"
+    state:            installed
+    update_cache:     yes
+    cache_valid_time: 3600
+  with_items:
+    - autoconf
+    - binutils-doc
+    - bison
+    - build-essential
+    - flex
+    - gettext
+    - ncurses-dev
+    - zlib1g-dev
+
+- name: Install the 'backup' gem
+  gem:
+    name:         backup
+    state:        present
+    user_install: false

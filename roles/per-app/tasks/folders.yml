@@ -1,0 +1,17 @@
+---
+- name: Create web root
+  file:
+    path: "{{ webroot }}"
+    owner: web
+    group: www-data
+    mode: 0755
+    state: directory
+
+- name: Create logs folder of sites
+  file:
+    path: "{{ webroot }}/{{ item.key }}/logs"
+    owner: web
+    group: www-data
+    mode: 0755
+    state: directory
+  with_dict: "{{ apps }}"

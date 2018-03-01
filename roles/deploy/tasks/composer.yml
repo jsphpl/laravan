@@ -1,0 +1,6 @@
+---
+- name: Install Composer dependencies
+  composer:
+    command: install
+    working_dir: "{{ deploy_helper.new_release_path }}"
+    no_dev: "{{ 'no' if env == 'development' else 'yes' }}"

@@ -1,0 +1,31 @@
+---
+apps:
+  laravan-com:
+    hosts:
+      - canonical: dev.laravan.com
+    ssl:
+      enabled: True
+      provider: self-signed
+    source:
+      url: git@bitbucket.org:jsphpl/laravan-com.git
+      version: develop
+    env:
+      APP_URL: https://dev.laravan.com
+      APP_DEBUG: true
+      APP_KEY: base64:6o/p8iCCijvDHwBPNyAZxm9BFpHA4NlJQI8QvPGE9ww=
+      DB_HOST: "127.0.0.1"
+      DB_DATABASE: laravan-com
+      DB_USERNAME: laravan-com
+      DB_PASSWORD: secret
+      QUEUE_DRIVER: beanstalkd
+      MAIL_DRIVER: smtp
+      MAIL_HOST: mailtrap.io
+      MAIL_PORT: 2525
+      MAIL_USERNAME: "{{ vault_mail_username }}"
+      MAIL_PASSWORD: "{{ vault_mail_password }}"
+      MAIL_ENCRYPTION: tls
+    passport: False
+    workers:
+      - "php artisan queue:work beanstalkd --daemon --env=development"
+    backup:
+      enabled: False

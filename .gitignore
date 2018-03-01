@@ -1,0 +1,5 @@
+.vagrant/*
+.vault_pass
+vendor/*
+deploy.retry
+provision.retry

@@ -1,0 +1,27 @@
+---
+- name: Create some folders in the shared path
+  file:
+    path: "{{ deploy_helper.shared_path }}/{{ item }}"
+    state: directory
+    owner: web
+    group: www-data
+  with_items: "{{ laravel_shared_folders }}"
+
+- name: Remove symlink targets in app folder
+  file:
+    path: "{{ deploy_helper.new_release_path }}/{{ item.path }}"
+    state: absent
+  with_items: "{{ laravel_shared_symlinks }}"
+
+- name: Add symlinks from the new release to the shared folder
+  file:
+    path: "{{ deploy_helper.new_release_path }}/{{ item.path }}"
+    src: '{{ deploy_helper.shared_path }}/{{ item.src }}'
+    state: link
+  with_items: "{{ laravel_shared_symlinks }}"
+
+- name: Symlink the logs folder
+  file:
+    path: "{{ deploy_helper.shared_path }}/storage/logs"
+    src: "{{ webroot }}/{{ app_name }}/logs"
+    state: link

@@ -1,0 +1,6 @@
+---
+mysql_root_password: secret
+
+vault:
+  mail_username: yourMailtrapUsername
+  mail_password: yourMailtrapPassword

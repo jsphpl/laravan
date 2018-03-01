@@ -1,0 +1,39 @@
+---
+apps:
+  laravan-com:
+    hosts:
+      - canonical: laravan.com
+        redirects:
+          - www.laravan.com
+    ssl:
+      enabled: True
+      provider: letsencrypt
+    source:
+      url: git@bitbucket.org:jsphpl/laravan-com.git
+      version: master
+    env:
+      APP_URL: https://laravan.com
+      APP_DEBUG: true
+      APP_KEY: "{{ vault.app_key }}"
+      DB_HOST: "127.0.0.1"
+      DB_DATABASE: laravan-com
+      DB_USERNAME: laravan-com
+      DB_PASSWORD: "{{ vault.db_password }}"
+      QUEUE_DRIVER: beanstalkd
+      MAIL_DRIVER: smtp
+      MAIL_HOST: smtp.mailgun.org
+      MAIL_PORT: 25
+      MAIL_USERNAME: "{{ vault.mail_username }}"
+      MAIL_PASSWORD: "{{ vault.mail_password }}"
+      MAIL_ENCRYPTION: tls
+    passport: False
+    workers:
+      - "php artisan queue:work beanstalkd --daemon --env=production"
+    backup:
+      enabled: True
+      s3:
+        access_key_id: "{{ vault.s3.access_key_id }}"
+        secret_access_key: "{{ vault.s3.secret_access_key }}"
+        region: eu-central-1
+        bucket: laravan-com
+        path: backup

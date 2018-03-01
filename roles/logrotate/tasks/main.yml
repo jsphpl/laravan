@@ -1,0 +1,9 @@
+---
+- name: Generate logrotate config for apps
+  set_fact:
+    logrotate_scripts: "{{ logrotate_scripts|default([]) | union( [{ 'name': 'laravan-'+item.key, 'path': webroot+'/'+item.key+'/logs/*.log', 'options': logrotate_options }] ) }}"
+  with_dict: "{{ apps }}"
+
+- name: Setup logrotate using nickhammond.logrotate
+  include_role:
+    name: nickhammond.logrotate

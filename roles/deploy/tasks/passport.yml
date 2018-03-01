@@ -1,0 +1,11 @@
+---
+- name: Check if keys for Passport are present
+  stat:
+    path: "{{ deploy_helper.shared_path }}/storage/oauth-private.key"
+  register: key_file
+
+- name: Generate keys for Laravel Passport
+  shell: php artisan passport:keys
+  args:
+    chdir: "{{ deploy_helper.new_release_path }}"
+  when: not key_file.stat.exists

@@ -1,0 +1,9 @@
+---
+- name: Setup a cronjob for Laravel
+  cron:
+    name: "{{ item.key }} Laravel Cron"
+    minute: "*"
+    user: web
+    job: "cd {{ webroot }}/{{ item.key }}/current && php artisan schedule:run"
+    cron_file: "laravan-{{ item.key | replace('.', '_') }}"
+  with_dict: "{{ apps }}"

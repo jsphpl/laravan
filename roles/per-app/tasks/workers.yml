@@ -1,0 +1,7 @@
+---
+- name: Set up queue workers
+  template:
+    src: queue.conf
+    dest: "/etc/supervisor/conf.d/{{ item.key }}.conf"
+  with_dict: "{{ apps }}"
+  when: "{{ 'workers' in item.value }}"

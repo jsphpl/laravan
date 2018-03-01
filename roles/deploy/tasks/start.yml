@@ -1,0 +1,9 @@
+---
+- name: Initialize the deploy root and gather facts
+  deploy_helper:
+    path: "{{ webroot }}/{{ app_name }}"
+
+- name: Create the new deployment path
+  file:
+    path: "{{ deploy_helper.new_release_path }}"
+    state: directory

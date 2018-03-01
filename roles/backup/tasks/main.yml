@@ -1,0 +1,7 @@
+---
+
+- include: install.yml
+  when: ansible_os_family == "Debian"
+
+- include: configure.yml
+  when: ansible_os_family == "Debian"

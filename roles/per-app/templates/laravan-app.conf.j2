@@ -1,0 +1,112 @@
+# {{ ansible_managed }}
+
+server {
+  {% if item.value.ssl is defined and item.value.ssl.enabled | default(false) -%}
+  listen 443 ssl http2;
+  {% else -%}
+  listen 80;
+  {% endif %}
+
+  server_name  {% for host in app_hosts_canonical %}{{ host }} {% endfor %};
+  # access_log   {{ webroot }}/{{ item.key }}/logs/access.log;
+  # error_log    {{ webroot }}/{{ item.key }}/logs/error.log;
+
+  root  {{ webroot }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/{{ item.value.source.public_dir | default('public') }};
+  index index.php index.htm index.html;
+
+  charset utf-8;
+
+  {% if env == 'development' -%}
+  # See Virtualbox section at http://wiki.nginx.org/Pitfalls
+  sendfile off;
+  {%- endif %}
+
+  add_header Fastcgi-Cache $upstream_cache_status;
+
+  {% if item.value.ssl is defined and item.value.ssl.enabled | default(false) -%}
+    {{ lookup('template', 'https.conf.j2') }}
+  {% endif %}
+
+  {% if item.value.ssl is not defined or not item.value.ssl.enabled | default(false) -%}
+    include acme-challenge-location.conf;
+  {% endif %}
+
+  include includes.d/{{ item.key }}/*.conf;
+  include laravan.conf;
+
+  {% if item.value.spa_routing | default(False) %}
+    location / {
+      try_files $uri $uri/ /index.html;
+    }
+  {% else %}
+    location / {
+      try_files $uri $uri/ /index.php$is_args$args;
+    }
+  {% endif %}
+
+  location ~ \.php$ {
+    try_files $uri /index.php =404;
+    error_page 404 /index.php;
+
+    {% if item.value.cache is defined and item.value.cache.enabled | default(false) -%}
+      set $skip_cache 0;
+
+      if ($query_string != "") {
+        set $skip_cache 1;
+      }
+
+      fastcgi_cache laravan-{{ item.key }};
+      fastcgi_cache_valid {{ item.value.cache.duration | default(nginx_cache_duration) }};
+      fastcgi_cache_bypass $skip_cache;
+      fastcgi_no_cache $skip_cache;
+    {% endif -%}
+
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    fastcgi_param DOCUMENT_ROOT $realpath_root;
+    fastcgi_pass unix:/var/run/php-fpm-laravan.sock;
+    fastcgi_index index.php;
+  }
+}
+
+{% if item.value.ssl is defined and item.value.ssl.enabled | default(false) %}
+server {
+  listen 80;
+
+  server_name {{ app_hosts | join(' ') }};
+
+  {% if item.value.ssl.provider | default('manual') == 'letsencrypt' -%}
+  include acme-challenge-location.conf;
+
+  location / {
+    return 301 https://$host$request_uri;
+  }
+  {% else %}
+  return 301 https://$host$request_uri;
+  {% endif -%}
+}
+{% endif %}
+
+{% for host in item.value.hosts if host.redirects | default([]) %}
+server {
+  {% if item.value.ssl is defined and item.value.ssl.enabled | default(false) -%}
+    listen 443 ssl http2;
+
+    {{ lookup('template', 'https.conf.j2') }}
+  {% else -%}
+    listen 80;
+  {% endif -%}
+
+  server_name {{ host.redirects | join(' ') }};
+
+  {% if item.value.ssl is not defined or not item.value.ssl.enabled | default(false) -%}
+    include acme-challenge-location.conf;
+
+    location / {
+      return 301 $scheme://{{ host.canonical }}$request_uri;
+    }
+  {% else %}
+    return 301 $scheme://{{ host.canonical }}$request_uri;
+  {% endif %}
+}
+{% endfor %}

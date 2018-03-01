@@ -1,0 +1,54 @@
+---
+###################
+# Basics
+###################
+locale: de_DE.UTF-8
+ntp_timezone: Etc/UTC
+
+
+###################
+# Network Basics
+###################
+# Additional open ports (besides 22, 80 & 443)
+open_ports: []
+
+
+###################
+# Swapfile
+###################
+swapfile_location: /swapfile
+swapfile_size: 1024MB
+swapfile_swappiness: False
+swapfile_vfs_cache_pressure: False
+swapfile_use_dd: False
+
+
+###################
+# Locale
+###################
+default_timezone: Europe/Berlin
+
+
+###################
+# WWW
+###################
+webroot: /www
+
+
+###################
+# Beanstalkd
+###################
+enable_beanstalkd: True
+
+
+###################
+# Logrotate per-app options
+###################
+logrotate_options:
+  - weekly
+  - size 25M
+  - rotate 7
+  - missingok
+  - compress
+  - delaycompress
+  - copytruncate

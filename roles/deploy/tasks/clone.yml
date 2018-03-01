@@ -1,0 +1,12 @@
+---
+- name: Clone the project to the new release folder
+  git:
+    repo: "{{ current_app.source.url }}"
+    dest: "{{ deploy_helper.new_release_path }}"
+    version: "{{ current_app.source.version }}"
+    accept_hostkey: True
+
+- name: Add an unfinished file, to allow cleanup on successful finalize
+  file:
+    path: "{{ deploy_helper.new_release_path }}/{{ deploy_helper.unfinished_filename }}"
+    state: touch

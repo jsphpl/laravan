@@ -1,0 +1,4 @@
+---
+- name: "Set the locale to {{ locale }}"
+  locale_gen: "name={{ locale }} state=present"
+  tags: locale

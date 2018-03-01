@@ -1,0 +1,5 @@
+---
+- name: Migrate the database
+  shell: php artisan migrate --force
+  args:
+    chdir: "{{ deploy_helper.new_release_path }}"

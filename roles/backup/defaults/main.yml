@@ -1,0 +1,7 @@
+---
+backup_setup:
+  user:       'root'
+  config_dir: '/etc/backup'
+  tmp_dir:    '/tmp/backup'
+  data_dir:   '/var/lib/backup'
+  log_dir:    '/var/log/backup'
