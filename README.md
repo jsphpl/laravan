@@ -70,33 +70,35 @@ apps:
 …
 ```
 
-**Note:** in `group_vars/production/apps.yml`, you will find some variables, eg `{{ vault.app_key }}`. These variables need to be assigned concrete values in the `group_vars/production/vault.yml`. Please refer to section (8. Encrypt vault) for instructions on how to encrypt your vault files.
+**Note:** in `group_vars/production/apps.yml`, you will find some variables, eg `{{ vault.app_key }}`. These variables need to be assigned concrete values in the `group_vars/production/vault.yml`. Please refer to section (6. Encrypt vault) for instructions on how to encrypt your vault files.
 
 - `app_name` must be replaced with a unique name for the app. It must be a valid python variable name, so use only letters and underscore
 - `canonical:` holds the primary domain under which your app will be available
 - `env:` those values will eventually be written into an `.env` on the server. **They are also used to configure the database correctly, so don't miss them!**
-
-### 6. Provision
-
-**Note: When using "letsencrypt" as TLS certificate provider, all domains listed under `canonical` or `redirects` must be mapped to your IP address (resolvable via public DNS) before you can successfully provision your server.**
-
-```bash
-ansible-playbook provision.yml -e env=development
 ```
 
-### 7. Deploy
-
-```bash
-ansible-playbook deploy.yml -e env=development -e app_name=example
-```
-
-### 8. Encrypt vault
+### 6. Encrypt vault
 
 In order to prevent your production secrets from ending up as plain text in your git repositories, use the [ansible vault](http://docs.ansible.com/ansible/2.4/vault.html).
 
 1. Create a `.vault_pass` file containing a strong password (eg. `openssl rand -base64 64 > .vault_pass`). This file is gitignored, which you should leave at all cost. Your coworkers who need to be able to provision/deploy as well will need a copy of the file.
 2. Encrypt your vault: `ansible-vault encrypt group_vars/production/vault.yml`
 3. **Never again decrypt the vault!**. Use `ansible-vault view <path>` or `ansible-vault edit <path>` to open the vault file. This reduces the risk of the vault ending up plain text in your version control.
+
+### 7. Provision
+
+**Note: When using "letsencrypt" as TLS certificate provider, all domains listed under `canonical` or `redirects` must be mapped to your IP address (resolvable via public DNS) before you can successfully provision your server.**
+
+On your local machine, run the following command, replacing `development` with the environment you want to provision (most likely `development` or `production`).
+
+```bash
+ansible-playbook provision.yml -e env=development
+```
+
+### 8. Deploy
+
+```bash
+ansible-playbook deploy.yml -e env=development -e app_name=example
 
 
 ## Credits
