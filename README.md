@@ -104,4 +104,4 @@ Credits to the awesome [Trellis](https://github.com/roots/trellis) project, whic
 
 ## License
 
-This software is released "as it is" without any warranty under the MIT licence. See [LICENCE.md](LICENCE.md) for details.
+This software is released "as it is" without any warranty under the MIT licence. See [LICENSE](LICENSE) for details.
