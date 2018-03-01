@@ -67,9 +67,7 @@ apps:
       DB_PASSWORD: secret
 
   another_app:
-  	hosts:
-  	  - canonical: …
-  	…
+…
 ```
 
 - `app_name` must be replaced with a unique name for the app. It must be a valid python variable name, so use only letters and underscore
@@ -92,7 +90,7 @@ ansible-playbook deploy.yml -e env=development -e app_name=example
 
 In order to prevent your production secrets from ending up as plain text in your git repositories, use the [ansible vault](http://docs.ansible.com/ansible/2.4/vault.html).
 
-1. Create a `.vault_pass` file containing a strong password (eg. `openssl rand -base64 64 > .vault_pass`). This file is gitignored, which you should leave at all cost. Your coworkers will need a copy of the file.
+1. Create a `.vault_pass` file containing a strong password (eg. `openssl rand -base64 64 > .vault_pass`). This file is gitignored, which you should leave at all cost. Your coworkers who need to be able to provision/deploy as well will need a copy of the file.
 2. Encrypt your vault: `ansible-vault encrypt group_vars/production/vault.yml`
 3. **Never again decrypt the vault!**. Use `ansible-vault view <path>` or `ansible-vault edit <path>` to open the vault file. This reduces the risk of the vault ending up plain text in your version control.
 
