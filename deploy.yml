@@ -1,6 +1,7 @@
 ---
 - name: "Deploy {{ app_name }} to {{ env }}"
   hosts: "{{ env }}"
+  user: "{{ web_user }}"
   become_user: "{{ web_user }}"
   become: yes
   vars:
