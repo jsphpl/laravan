@@ -1,0 +1,12 @@
+---
+#-------------------------------------------------------------------------------
+# Logrotate per-app options
+#-------------------------------------------------------------------------------
+logrotate_options:
+  - weekly
+  - size 25M
+  - rotate 7
+  - missingok
+  - compress
+  - delaycompress
+  - copytruncate

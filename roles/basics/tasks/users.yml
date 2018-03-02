@@ -2,7 +2,8 @@
 - name: Create some users
   user:
     name: "{{ item.name }}"
-    group: "{{ item.group }}"
+    group: "{{ item.groups[0] }}"
+    groups: "{{ item.groups }}"
     state: present
     shell: /bin/bash
   with_items:

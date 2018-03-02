@@ -2,6 +2,7 @@
 - name: Provision servers in {{ env }}
   hosts: "{{ env }}"
   become: yes
+  remote_user: root
   roles:
     - role: basics
       tags: basics

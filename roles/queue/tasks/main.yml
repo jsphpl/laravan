@@ -4,6 +4,11 @@
     name: supervisor
     state: present
 
+- name: Install supervisord configuration
+  template:
+    src: supervisord.conf.j2
+    dest: /etc/supervisor/supervisord.conf
+
 - name: Start and enable Supervisor via systemctl as workaround for a bug in the 16.04 supervisor package
   shell: "{{ item }}"
   with_items:

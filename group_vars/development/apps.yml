@@ -7,8 +7,8 @@ apps:
       enabled: True
       provider: self-signed
     source:
-      url: git@bitbucket.org:jsphpl/laravan-com.git
-      version: develop
+      url: git@bitbucket.org:jsphpl/httping.git
+      version: master
     env:
       APP_URL: https://dev.laravan.com
       APP_DEBUG: true
@@ -21,8 +21,8 @@ apps:
       MAIL_DRIVER: smtp
       MAIL_HOST: mailtrap.io
       MAIL_PORT: 2525
-      MAIL_USERNAME: "{{ vault_mail_username }}"
-      MAIL_PASSWORD: "{{ vault_mail_password }}"
+      MAIL_USERNAME: "{{ vault.mail_username }}"
+      MAIL_PASSWORD: "{{ vault.mail_password }}"
       MAIL_ENCRYPTION: tls
     passport: False
     workers:
