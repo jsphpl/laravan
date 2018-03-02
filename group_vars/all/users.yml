@@ -7,7 +7,6 @@ users:
       - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
       # - https://github.com/jsphpl.keys
 
-ansible_user: root
 web_user: web
 web_group: www-data
 web_sudoers:

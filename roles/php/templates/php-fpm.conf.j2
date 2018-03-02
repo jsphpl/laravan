@@ -2,10 +2,10 @@
 
 [laravan]
 listen = /var/run/php-fpm-laravan.sock
-listen.owner = www-data
-listen.group = www-data
-user = web
-group = www-data
+listen.owner = {{ web_group }}
+listen.group = {{ web_group }}
+user = {{ web_user }}
+group = {{ web_group }}
 pm = dynamic
 pm.max_children = 10
 pm.start_servers = 1

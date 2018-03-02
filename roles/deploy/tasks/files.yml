@@ -3,8 +3,8 @@
   file:
     path: "{{ deploy_helper.shared_path }}/{{ item }}"
     state: directory
-    owner: web
-    group: www-data
+    owner: "{{ web_user }}"
+    group: "{{ web_group }}"
   with_items: "{{ laravel_shared_folders }}"
 
 - name: Remove symlink targets in app folder

@@ -6,4 +6,4 @@
     state: present
     shell: /bin/bash
   with_items:
-    - { name: web, group: www-data }
+    "{{ users }}"
