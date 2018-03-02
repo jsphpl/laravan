@@ -52,4 +52,4 @@
   template:
     src: php-fpm.conf.j2
     dest: /etc/php/7.1/fpm/pool.d/laravan.conf
-  notify: reload php-fpm
+  notify: restart php-fpm
