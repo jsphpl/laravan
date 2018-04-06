@@ -6,6 +6,7 @@
     mode: 0640
   with_dict: "{{ apps }}"
   when: item.value.ssl.enabled and item.value.ssl.cert is defined
+  tags: certs
 
 - name: Copy SSL key
   copy:
@@ -14,6 +15,7 @@
     mode: 0600
   with_dict: "{{ apps }}"
   when: item.value.ssl.enabled and item.value.ssl.key is defined
+  tags: certs
 
 - name: Create includes.d directories
   file:
@@ -59,6 +61,7 @@
     dest: "{{ nginx_path }}/sites-available/{{ item.key }}.conf"
   with_dict: "{{ apps }}"
   notify: reload nginx
+  tags: certs
 
 - name: Enable Laravan site
   file:

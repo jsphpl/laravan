@@ -23,7 +23,7 @@
     - role: geerlingguy.composer
       tags: composer
     - role: letsencrypt
-      tags: letsencrypt
+      tags: [letsencrypt, certs]
     - role: per-app
       tags: per-app
     - role: logrotate
