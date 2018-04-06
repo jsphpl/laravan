@@ -1,7 +1,7 @@
 disable_default_pool: true
 memcached_sessions: false
 
-php_version: "{{ '7.1' if is_arm == False else '7.0' }}"
+php_version: "7.1"
 
 php_error_reporting: 'E_ALL & ~E_DEPRECATED & ~E_STRICT'
 php_display_errors: 'Off'

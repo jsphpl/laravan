@@ -70,7 +70,7 @@ apps:
 …
 ```
 
-**Note:** in `group_vars/production/apps.yml`, you will find some variables, eg `{{ vault.app_key }}`. These variables need to be assigned concrete values in the `group_vars/production/vault.yml`. Please refer to section (6. Encrypt vault) for instructions on how to encrypt your vault files.
+**Note:** in `group_vars/production/apps.yml`, you will find some "sensitive" variables that refer to the vault, eg. `{{ vault.app_key }}`. These variables need to be assigned concrete values in the `group_vars/production/vault.yml`. Please refer to section (6. Encrypt vault) for instructions on how to encrypt your vault files.
 
 - `app_name` must be replaced with a unique name for the app. It must be a valid python variable name, so use only letters and underscore
 - `canonical:` holds the primary domain under which your app will be available

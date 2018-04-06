@@ -21,6 +21,12 @@
     update_cache: yes
   when: is_debian == True and is_arm == False
 
+- name: Add PHP Repository (ARM)
+  apt_repository:
+    repo: "deb http://mirrordirector.raspbian.org/raspbian/ buster main contrib non-free rpi"
+    update_cache: yes
+  when: is_arm == True
+
 - name: "Install PHP {{php_version}}"
   apt:
     name: "{{ item }}"
