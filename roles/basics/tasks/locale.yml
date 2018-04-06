@@ -1,4 +1,25 @@
 ---
-- name: "Set the locale to {{ locale }}"
-  locale_gen: "name={{ locale }} state=present"
+- name: Set locales to be generated
+  template:
+    src: locale.gen.j2
+    dest:  /etc/locale.gen
+    owner: root
+    group: root
+    mode:  0644
+  tags: locale
+
+- name: Set default locale
+  template:
+    src: locale.j2
+    dest:  /etc/default/locale
+    owner: root
+    group: root
+    mode:  0644
+  tags: locale
+
+- name: Rebuild locales database
+  command: "{{ item }}"
+  with_items:
+    - /usr/sbin/locale-gen
+    - dpkg-reconfigure locales -f noninteractive
   tags: locale
