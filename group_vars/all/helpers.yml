@@ -2,3 +2,9 @@
 app_hosts_canonical: "{{ item.value.hosts | map(attribute='canonical') | list }}"
 app_hosts_redirects: "{{ item.value.hosts | selectattr('redirects', 'defined') | sum(attribute='redirects', start=[]) | list }}"
 app_hosts: "{{ app_hosts_canonical | union(app_hosts_redirects) }}"
+
+needs_self_signed_cert: "{{ item.value.ssl.enabled and item.value.ssl.provider | default('manual') == 'self-signed' }}"
+
+is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial' }}"
+is_debian: "{{ ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' }}"
+is_arm: "{{ ansible_machine == 'aarch64' }}"

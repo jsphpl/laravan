@@ -1,55 +1,72 @@
 ---
-- name: Add PHP 7.1 PPA
+- name: Print machine info
+  debug:
+    msg: "{{ansible_machine}}"
+
+- name: Add PHP PPA (Ubuntu)
   apt_repository:
     repo: "ppa:ondrej/php"
     update_cache: yes
+  when: is_ubuntu == True and is_arm == False
 
-- name: Install PHP 7.1
+- name: Install key for PHP repository (Debian)
+  get_url:
+    url: https://packages.sury.org/php/apt.gpg
+    dest: /etc/apt/trusted.gpg.d/php.gpg
+  when: is_debian == True and is_arm == False
+
+- name: Add PHP Repository (Debian)
+  apt_repository:
+    repo: "deb https://packages.sury.org/php {{ ansible_distribution_release }} main"
+    update_cache: yes
+  when: is_debian == True and is_arm == False
+
+- name: "Install PHP {{php_version}}"
   apt:
     name: "{{ item }}"
     state: present
     force: yes
   with_items:
-  - php7.1-cli
-  - php7.1-common
-  - php7.1-curl
-  - php7.1-dev
-  - php7.1-fpm
-  - php7.1-gd
-  - php7.1-mbstring
-  - php7.1-mcrypt
-  - php7.1-mysql
-  - php7.1-opcache
-  - php7.1-xml
-  - php7.1-xmlrpc
-  - php7.1-zip
+  - "php{{php_version}}-cli"
+  - "php{{php_version}}-common"
+  - "php{{php_version}}-curl"
+  - "php{{php_version}}-dev"
+  - "php{{php_version}}-fpm"
+  - "php{{php_version}}-gd"
+  - "php{{php_version}}-mbstring"
+  - "php{{php_version}}-mcrypt"
+  - "php{{php_version}}-mysql"
+  - "php{{php_version}}-opcache"
+  - "php{{php_version}}-xml"
+  - "php{{php_version}}-xmlrpc"
+  - "php{{php_version}}-zip"
 
-- name: Start php7.1-fpm service
+- name: "Start php{{php_version}}-fpm service"
   service:
-    name: php7.1-fpm
+    name: "php{{php_version}}-fpm"
     state: started
     enabled: true
 
 - name: Create socket directory
   file:
-    path: /var/run/php7.1-fpm/
+    path: "/var/run/php{{php_version}}-fpm/"
     state: directory
 
 - name: Disable default pool
-  command: mv /etc/php/7.1/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.disabled
+  command: "mv /etc/php/{{php_version}}/fpm/pool.d/www.conf /etc/php/{{php_version}}/fpm/pool.d/www.disabled"
   args:
-    creates: /etc/php/7.1/fpm/pool.d/www.disabled
+    creates: "/etc/php/{{php_version}}/fpm/pool.d/www.disabled"
   when: disable_default_pool
   notify: reload php-fpm
 
 - name: PHP configuration file
   template:
     src: php.ini.j2
-    dest: /etc/php/7.1/fpm/php.ini
+    dest: "/etc/php/{{php_version}}/fpm/php.ini"
   notify: reload php-fpm
 
 - name: php-fpm configuration file
   template:
     src: php-fpm.conf.j2
-    dest: /etc/php/7.1/fpm/pool.d/laravan.conf
+    dest: "/etc/php/{{php_version}}/fpm/pool.d/laravan.conf"
   notify: restart php-fpm

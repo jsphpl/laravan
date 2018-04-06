@@ -1,10 +1,10 @@
 ---
 - name: reload php-fpm
   service:
-    name: php7.1-fpm
+    name: "php{{php_version}}-fpm"
     state: reloaded
-    
+
 - name: restart php-fpm
   service:
-    name: php7.1-fpm
+    name: "php{{php_version}}-fpm"
     state: restarted

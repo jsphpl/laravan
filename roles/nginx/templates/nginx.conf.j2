@@ -134,5 +134,8 @@ http {
   # a specific directory, or on an individual server{} level.
   # gzip_static on;
 
+  # Workaround
+  server_names_hash_bucket_size {{ server_names_hash_bucket_size }};
+
   include sites-enabled/*;
 }

@@ -1,13 +1,52 @@
 ---
-- name: Generate self-signed certificates
-  shell: >
-    openssl req -subj "/CN={{ item.value.hosts[0].canonical }}" -new
-    -newkey rsa:2048 -days 3650 -nodes -x509 -sha256
-    -keyout {{ item.key }}.key -out {{ item.key }}.cert
+- name: Generate private key for the CA
+  shell: openssl genrsa -out CA.key 2048
   args:
     chdir: "{{ nginx_path }}/ssl"
-    creates: "{{ item.key }}.*"
+    creates: "CA.key"
+
+- name: Generate root certificate for the CA
+  shell: >
+    openssl req -x509 -new -nodes -key CA.key -sha256 -days 3650 -out CA.pem
+    -subj "/CN=Development Certificate Authority"
+  args:
+    chdir: "{{ nginx_path }}/ssl"
+    creates: "CA.pem"
+
+- name: Generate certificate private keys
+  shell: "openssl genrsa -out {{ item.key }}.key 2048"
+  args:
+    chdir: "{{ nginx_path }}/ssl"
+    creates: "{{ item.key }}.key"
   with_dict: "{{ apps }}"
-  when: item.value.ssl.enabled and item.value.ssl.provider | default('manual') == 'self-signed'
+  when: needs_self_signed_cert
+
+- name: Generate CSRs
+  shell: openssl req -new -key {{ item.key }}.key -subj "/CN={{ item.key }}" -out {{ item.key }}.csr
+  args:
+    chdir: "{{ nginx_path }}/ssl"
+    creates: "{{ item.key }}.csr"
+  with_dict: "{{ apps }}"
+  when: needs_self_signed_cert
+
+- name: Certificate generation configs
+  template:
+    src: ext.j2
+    dest: "{{ nginx_path }}/ssl/{{ item.key }}.ext"
+  with_dict: "{{ apps }}"
+  when: needs_self_signed_cert
+
+- name: Generate self-signed certificates
+  shell: >
+    openssl x509 -req -in {{ item.key }}.csr
+    -CA CA.pem -CAkey CA.key -CAcreateserial
+    -out {{ item.key }}.cert
+    -days 3650 -sha256
+    -extfile {{ item.key }}.ext
+  args:
+    chdir: "{{ nginx_path }}/ssl"
+    creates: "{{ item.key }}.cert"
+  with_dict: "{{ apps }}"
+  when: needs_self_signed_cert
   notify:
     - reload nginx

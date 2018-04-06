@@ -1,8 +1,9 @@
 ---
-- name: Add Nginx PPA
+- name: Add Nginx PPA (Ubuntu)
   apt_repository:
     repo: "ppa:nginx/development"
     update_cache: yes
+  when: is_ubuntu and not is_arm
 
 - name: Install Nginx
   apt:
