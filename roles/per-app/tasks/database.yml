@@ -16,6 +16,7 @@
     state: present
     login_user: "{{ mysql_root_user }}"
     login_password: "{{ mysql_root_password }}"
+    host: "127.0.0.1"
   with_dict: "{{ apps }}"
   when: item.value.db_create | default(True)
 

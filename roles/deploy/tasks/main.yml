@@ -9,6 +9,8 @@
   when: "{{ current_app.is_laravel | default(True) }}"
 - include: passport.yml
   when: "'passport' in current_app and current_app.passport == True"
+- include: maintenance.yml
+  when: "{{ current_app.is_laravel | default(True) }}"
 - include: migrate.yml
   when: "{{ current_app.is_laravel | default(True) }}"
 - include: finish.yml

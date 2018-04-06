@@ -1,0 +1,5 @@
+---
+- name: end maintenance
+  shell: php artisan up
+  args:
+    chdir: "{{ webroot }}/{{ app_name }}/current"

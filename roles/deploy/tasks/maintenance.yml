@@ -1,0 +1,13 @@
+---
+- name: Check if we're updating an existing app
+  stat:
+    path: "{{ webroot }}/{{ app_name }}/current/artisan"
+  register: artisan
+  when: current_app.is_laravel | default(True)
+
+- name: Switch application into maintenance mode
+  shell: php artisan down
+  args:
+    chdir: "{{ webroot }}/{{ app_name }}/current"
+  notify: end maintenance
+  when: (current_app.is_laravel | default(True)) and artisan.stat.exists
