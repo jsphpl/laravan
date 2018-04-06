@@ -7,4 +7,4 @@ needs_self_signed_cert: "{{ item.value.ssl.enabled and item.value.ssl.provider |
 
 is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial' }}"
 is_debian: "{{ ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch' }}"
-is_arm: "{{ ansible_machine == 'aarch64' }}"
+is_arm: "{{ ansible_machine == 'aarch64' or ansible_machine == 'armv7l' }}"
