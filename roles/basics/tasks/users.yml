@@ -1,5 +1,5 @@
 ---
-- name: Create some users
+- name: Create users
   user:
     name: "{{ item.name }}"
     group: "{{ item.groups[0] }}"

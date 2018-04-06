@@ -4,3 +4,4 @@
 - include: locale.yml
 - include: users.yml
 - include: unattended-upgrades.yml
+- include: web.yml
