@@ -2,6 +2,6 @@
 #-------------------------------------------------------------------------------
 # Locale
 #-------------------------------------------------------------------------------
-locale: en_GB.UTF-8
-ntp_timezone: Etc/UTC
-default_timezone: Europe/London
+locale: de_DE.UTF-8
+ntp_timezone: Europe/Berlin
+default_timezone: ntp_timezone
