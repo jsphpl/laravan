@@ -2,16 +2,18 @@
 - include: start.yml
 - include: clone.yml
 - include: files.yml
-  when: "{{ current_app.is_laravel | default(True) }}"
+  when: current_app.is_laravel | default(True)
 - include: env.yml
-  when: "{{ current_app.is_laravel | default(True) }}"
+  when: current_app.is_laravel | default(True)
 - include: composer.yml
-  when: "{{ current_app.is_laravel | default(True) }}"
+  when: current_app.is_laravel | default(True)
 - include: passport.yml
   when: "'passport' in current_app and current_app.passport == True"
 - include: maintenance.yml
-  when: "{{ current_app.is_laravel | default(True) }}"
+  when: current_app.is_laravel | default(True)
 - include: migrate.yml
-  when: "{{ current_app.is_laravel | default(True) }}"
+  when: current_app.is_laravel | default(True)
+- include: optimize.yml
+  when: current_app.is_laravel | default(True)
 - include: finish.yml
 - include: restart-workers.yml

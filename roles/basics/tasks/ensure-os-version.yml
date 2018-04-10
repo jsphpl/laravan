@@ -1,6 +1,6 @@
 ---
 - name: Make sure we're on Ubuntu 16.04 or Debian Stretch
   fail:
-    msg: Laravan is designed to run on Ubuntu 16.04 or Debian Stretch only.
+    msg: "Laravan is designed to run on Ubuntu 16.04 or Debian only. Your OS is '{{ ansible_distribution }}' in version '{{ ansible_distribution_release }}'"
   when: not is_ubuntu and not is_debian
   tags: ensure-os-version

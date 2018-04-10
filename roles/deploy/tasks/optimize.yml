@@ -1,0 +1,17 @@
+---
+- name: Build laravel config cache
+  shell: php artisan config:cache
+  args:
+    chdir: "{{ deploy_helper.new_release_path }}"
+
+- name: Build laravel route cache
+  shell: php artisan route:cache
+  args:
+    chdir: "{{ deploy_helper.new_release_path }}"
+  register: route_cache_result
+  ignore_errors: yes
+
+- name: Inform about inability to cache routes due to Closure
+  debug:
+    msg: Routes could not be cached due to a Closure. In order to have routes cached, you may only define controller routes.
+  when: '"Closure" in route_cache_result.stdout'
