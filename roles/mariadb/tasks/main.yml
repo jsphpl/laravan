@@ -1,13 +1,23 @@
 ---
-- name: Install MySQL client
-  apt:
-    name: mariadb-client
-    state: present
+- name: Install key for MariaDB repository (Ubuntu)
+  apt_key:
+    keyserver: "hkp://keyserver.ubuntu.com:80"
+    id: "0xF1656F24C74CD1D8"
+  when: is_ubuntu == True and is_arm == False
 
-- name: Install MySQL server
+- name: Add MariaDB PPA (Ubuntu)
+  apt_repository:
+    repo: "deb [arch=amd64,i386,ppc64el] http://mirror.daniel-jost.net/mariadb/repo/10.2/ubuntu xenial main"
+    update_cache: yes
+  when: is_ubuntu == True and is_arm == False
+
+- name: Install MariaDB
   apt:
-    name: mariadb-server
+    name: "{{ item }}"
     state: present
+  with_items:
+    - mariadb-client
+    - mariadb-server
 
 - name: Disable MySQL binary logging
   template:
