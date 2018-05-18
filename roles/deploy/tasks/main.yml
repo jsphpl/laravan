@@ -4,7 +4,7 @@
 - include: files.yml
   when: current_app.is_laravel | default(True)
 - include: env.yml
-  when: current_app.is_laravel | default(True)
+  when: current_app.env is defined | default(False)
 - include: composer.yml
   when: current_app.is_laravel | default(True)
 - include: passport.yml
