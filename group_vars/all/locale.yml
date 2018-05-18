@@ -4,4 +4,4 @@
 #-------------------------------------------------------------------------------
 locale: de_DE.UTF-8
 ntp_timezone: Europe/Berlin
-default_timezone: ntp_timezone
+default_timezone: "{{ ntp_timezone }}"
