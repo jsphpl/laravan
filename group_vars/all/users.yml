@@ -1,11 +1,16 @@
 ---
+#-------------------------------------------------------------------------------
+# User accounts configuration
+#-------------------------------------------------------------------------------
 users:
   - name: "{{ web_user }}"
     groups:
       - "{{ web_group }}"
     keys:
-      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-      # - https://github.com/jsphpl.keys
+# Uncomment and edit either of the following lines in order to authorize yourself to log in as the "web" user on the servers.
+# It's required for deployment. Add lines for your coworkers that also require deployment permissions accordingly.
+#      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+#      - https://github.com/username.keys
 
 web_user: web
 web_group: www-data

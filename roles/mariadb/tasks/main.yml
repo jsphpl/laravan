@@ -37,7 +37,7 @@
   mysql_user:
     name: "{{ mysql_root_user }}"
     host: "{{ item }}"
-    password: "{{ mysql_root_password }}"
+    password: "{{ vault.db_passwords.root }}"
     check_implicit_admin: yes
     state: present
   with_items:

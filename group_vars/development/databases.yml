@@ -1,0 +1,7 @@
+---
+databases:
+  - type: postgres
+#  - type: mysql
+    name: myapp
+    user: myapp
+    password: "{{ vault.db_passwords.myapp_postgres }}"

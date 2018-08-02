@@ -1,2 +1,3 @@
+mariadb_required: "True in [{% for item in databases if item.type == 'mysql' %}{{ True }},{% endfor %}]"
 mariadb_binary_logging_disabled: true
 mysql_root_user: root

@@ -1,22 +1,13 @@
 ---
-
-- name: Make sure ruby is installed
+- name: Make sure ruby and the build dependencies for our gem are present
   apt:
-    pkg:              "{{ item }}"
-    state:            installed
-    update_cache:     yes
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
     cache_valid_time: 3600
   with_items:
     - ruby
     - ruby-dev
-
-- name: Make sure the build dependencies for our gem are installed
-  apt:
-    pkg:              "{{ item }}"
-    state:            installed
-    update_cache:     yes
-    cache_valid_time: 3600
-  with_items:
     - autoconf
     - binutils-doc
     - bison
@@ -28,6 +19,7 @@
 
 - name: Install the 'backup' gem
   gem:
-    name:         backup
-    state:        present
+    name: backup
+    state: present
     user_install: false
+    version: 5.0.0.beta.2

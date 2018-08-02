@@ -1,6 +1,18 @@
 ---
-mysql_root_password: secret
-
 vault:
-  mail_username: yourMailtrapUsername
-  mail_password: yourMailtrapPassword
+  # Passwords for databases
+  db_passwords:
+    root: supersecretPassword-goes-here
+    myapp_postgres: secretPassword-goes-here
+
+  # The secret app key used by Laravel
+  app_key: "base64:Iu1g5NjYRMKWDZyBFg0kdSuy09EPstGGQwYU1dSWNYQ="
+
+  # SMTP Credentials
+  mail:
+    password: yourMailtrapPassword-goes-here
+
+  # S3 Credentials for backups
+  s3:
+    access_key_id:  s3AccessKeyId-goes-here
+    secret_access_key: s3SecretAccessKey-goes-here

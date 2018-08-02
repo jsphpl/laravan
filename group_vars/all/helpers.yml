@@ -1,4 +1,7 @@
 ---
+#-------------------------------------------------------------------------------
+# These are just helpers, don't change them…
+#-------------------------------------------------------------------------------
 app_hosts_canonical: "{{ item.value.hosts | map(attribute='canonical') | list }}"
 app_hosts_redirects: "{{ item.value.hosts | selectattr('redirects', 'defined') | sum(attribute='redirects', start=[]) | list }}"
 app_hosts: "{{ app_hosts_canonical | union(app_hosts_redirects) }}"

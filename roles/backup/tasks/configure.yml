@@ -23,20 +23,20 @@
 
 - name: Configure individual backup models
   template:
-    src:   model.rb.j2
-    dest:  "{{ backup_setup.config_dir }}/models/{{ item.key.replace('.', '_') }}.rb"
+    src:   models/{{ item.type }}.rb.j2
+    dest:  "{{ backup_setup.config_dir }}/models/{{ item.name.replace('.', '_') }}.rb"
     owner: "{{ backup_setup.user }}"
     group: "{{ backup_setup.user }}"
     mode:  0600
-  with_dict: "{{ apps }}"
-  when: "'backup' in item.value and item.value.backup.enabled"
+  with_items: "{{ databases }}"
+  when: "'backup' in item"
 
 - name: Configure cron to run our backups daily
   template:
     src:   cron.j2
-    dest:  "/etc/cron.daily/backup-{{ item.key.replace('.', '_') }}"
+    dest:  "/etc/cron.daily/backup-{{ item.name.replace('.', '_') }}"
     owner: "{{ backup_setup.user }}"
     group: "{{ backup_setup.user }}"
     mode:  0700
-  with_dict: "{{ apps }}"
-  when: "'backup' in item.value and item.value.backup.enabled"
+  with_items: "{{ databases }}"
+  when: "'backup' in item"

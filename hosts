@@ -1,5 +1,5 @@
 [development]
-192.168.0.42
+10.10.0.42
 
 [production]
-138.68.89.215
+<production-ip-address-goes-here>

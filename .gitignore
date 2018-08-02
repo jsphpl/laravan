@@ -3,3 +3,4 @@
 vendor/*
 deploy.retry
 provision.retry
+.idea

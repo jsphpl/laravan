@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+
+##
+# Backup Generated: backup_files
+# Once configured, you can run the backup with the following command:
+#
+# $ backup perform -t backup_files [-c <path_to_configuration_file>]
+#
+# For more information about Backup's components, see the documentation at:
+# http://backup.github.io/backup
+#
+Model.new(:{{ item.name | regex_replace('[^a-zA-Z]+', '_') }}, '{{ item.name }} MariaDB dump') do
+
+  ##
+  # MySQL [Database]
+  #
+  database MySQL do |db|
+    # To dump all databases, set `db.name = :all` (or leave blank)
+    db.name               = "{{ item.name }}"
+    db.username           = "{{ item.user }}"
+    db.password           = "{{ item.password }}"
+    db.host               = "localhost"
+    db.port               = 3306
+  end
+
+  {{ lookup('template', 'store-and-notify.j2') }}
+
+end

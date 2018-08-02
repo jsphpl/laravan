@@ -1,13 +1,26 @@
 ---
-mysql_root_password: yourMySqlRootPassword
-
 vault:
-  app_key: yourGeneratedAppKey
-  db_password: yourDbPassword
-  mail_username: yourMailUsername
-  mail_password: yourMailPassword
+  # Passwords for databases
+  db_passwords:
+    root: supersecretPassword-goes-here
+    myapp_postgres: secretPassword-goes-here
 
+  # The secret app key used by Laravel
+  app_key: "base64:M3K69g0qqUJ2NWMxIqdGrunovDRnepog0qkw8Bev0Dk="
+
+  # SMTP username & password
+  mail:
+    username: smtpUsername-goes-here
+    password: smtpPassword-goes-here
+
+  # S3 credentials for backups
   s3:
-    access_key_id:  s3AccessKeyId
-    secret_access_key: s3SecretAccessKey
+    access_key_id:  s3AccessKeyId-goes-here
+    secret_access_key: s3SecretAccessKey-goes-here
 
+  # Credentials for Pusher
+  pusher:
+    app_id: pusherAppId-goes-here
+    app_key: pusherAppKey-goes-here
+    app_secret: pusherAppSecret-goes-here
+    cluster: eu

@@ -1,6 +1,4 @@
 ---
-- include: database.yml
-  when: "{{ item.value.database | default(True) }}"
 - include: self-signed-certificate.yml
   tags: certs
 - include: folders.yml

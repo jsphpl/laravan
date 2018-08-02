@@ -18,8 +18,13 @@
 - name: Make sure Supervisor is being run
   service:
     name: supervisor
-    state: started
+    state: restarted
     enabled: yes
+
+- name: Install Redis
+  apt:
+    name: redis-server
+    state: present
 
 - name: Install Beanstalkd memory queue
   apt:
@@ -30,7 +35,7 @@
 - name: Make sure Beanstalkd is being run
   service:
     name: beanstalkd
-    state: started
+    state: restarted
     enabled: yes
   when: enable_beanstalkd
 

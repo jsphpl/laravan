@@ -15,8 +15,10 @@
   - git-core
   - python-mysqldb
   - python-pycurl
+  - python-psycopg2
   - python3-software-properties
   - apt-transport-https
   - lsb-release
   - ca-certificates
+  - graphviz
   tags: essential-packages

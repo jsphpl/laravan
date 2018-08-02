@@ -3,6 +3,7 @@
   hosts: "{{ env }}"
   remote_user: "{{ web_user }}"
   vars:
+    app_name: "{{ app }}"
     current_app: "{{ apps[app_name] }}"
   roles:
     - role: deploy

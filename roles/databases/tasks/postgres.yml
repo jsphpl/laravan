@@ -1,0 +1,20 @@
+---
+- name: "Postgres: Create users"
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
+  with_items: "{{ databases }}"
+  when: item.type == 'postgres'
+
+- name: "Postgres: Create databases"
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ item.name }}"
+    state: present
+    owner: "{{ item.user }}"
+    login_user: "{{ postgres_root_user }}"
+  with_items: "{{ databases }}"
+  when: item.type == 'postgres'

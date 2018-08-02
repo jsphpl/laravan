@@ -1,0 +1,51 @@
+
+  ##
+  # Compress with BZip2
+  #
+  compress_with Bzip2 do |compression|
+    compression.level = 9
+  end
+
+{% if 's3' in item.backup %}
+  ##
+  # Amazon Simple Storage Service [Storage]
+  #
+  store_with S3 do |s3|
+    # AWS Credentials
+    s3.access_key_id     = "{{ item.backup.s3.access_key_id }}"
+    s3.secret_access_key = "{{ item.backup.s3.secret_access_key }}"
+    # Or, to use a IAM Profile:
+    # s3.use_iam_profile = true
+
+    s3.region            = "{{ item.backup.s3.region }}"
+    s3.bucket            = "{{ item.backup.s3.bucket }}"
+    s3.path              = "{{ item.backup.s3.path }}"
+    # s3.keep              = 5
+    # s3.keep              = Time.now - 2592000 # Remove all backups older than 1 month.
+  end
+{% endif %}
+
+{% if 'slack' in item.backup %}
+  ##
+  # Slack [Notifier]
+  #
+  notify_by Slack do |slack|
+    slack.on_success = true
+    slack.on_warning = true
+    slack.on_failure = true
+
+    # The incoming webhook url
+    # https://hooks.slack.com/services/xxxxxxxx/xxxxxxxxx/xxxxxxxxxx
+    slack.webhook_url = '{{ item.backup.slack.webhook_url }}'
+
+
+    ##
+    # Optional
+    #
+    # The channel to which messages will be sent
+    # slack.channel = 'ops-log'
+    #
+    # The username to display along with the notification
+    # slack.username = 'backup@example.org'
+  end
+{% endif %}

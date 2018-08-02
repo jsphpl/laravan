@@ -1,0 +1,18 @@
+---
+databases:
+  - type: postgres
+#  - type: mysql
+    name: myapp
+    user: myapp
+    password: "{{ vault.db_passwords.myapp_postgres }}"
+    backup:
+      s3:
+        access_key_id: "{{ vault.s3.access_key_id }}"
+        secret_access_key: "{{ vault.s3.secret_access_key }}"
+        region: eu-central-1
+        bucket: myapp-backups
+        path: daily
+# Uncomment the following line and enter a valid slack webhook url in order
+# to receive notifications about backup success / failure through slack:
+#      slack:
+#        webhook_url: https://hooks.slack.com/services/xxxxxxxx/xxxxxxxxx/xxxxxxxxxx

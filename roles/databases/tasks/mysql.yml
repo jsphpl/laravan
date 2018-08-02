@@ -1,0 +1,22 @@
+---
+- name: "MySQL: Create databases"
+  mysql_db:
+    name: "{{ item.name }}"
+    state: present
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ vault.db_passwords.root }}"
+  with_items: "{{ databases }}"
+  when: item.type == 'mysql'
+
+- name: "MySQL: Create users and grant permissions"
+  mysql_user:
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
+    append_privs: yes
+    priv: "{{ item.name }}.*:ALL"
+    state: present
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ vault.db_passwords.root }}"
+    host: "localhost"
+  with_items: "{{ databases }}"
+  when: item.type == 'mysql'

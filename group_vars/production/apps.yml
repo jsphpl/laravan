@@ -1,39 +1,63 @@
 ---
 apps:
-  laravan_com:
+  # Choose a unique key for each app. It is required later
+  # in order to specify which app you want to deploy.
+  myapp-backend:
     hosts:
-      - canonical: laravan.com
+      - canonical: api.myapp.com
+        # HTTP redirects to the canonical domain will be set up for the following domains:
+        # In case TLS is enabled, certificates will be provisioned for all domains.
+        # You can delete them entirely, if you don't need any redirects set up.
         redirects:
-          - www.laravan.com
+          - api-v1.myapp.com
+          - api-v2.myapp.com
     ssl:
       enabled: True
       provider: letsencrypt
     source:
-      url: git@bitbucket.org:jsphpl/laravan-com.git
+      url: git@github.com:acme/myapp-backend
       version: master
     env:
-      APP_URL: https://laravan.com
-      APP_DEBUG: true
+      # App
+      APP_NAME: MyApp
+      APP_ENV: production
+      APP_URL: https://api.myapp.com
+      APP_DEBUG: false
       APP_KEY: "{{ vault.app_key }}"
+      # Database
+      DB_CONNECTION: pgsql
       DB_HOST: "127.0.0.1"
-      DB_DATABASE: laravan-com
-      DB_USERNAME: laravan-com
-      DB_PASSWORD: "{{ vault.db_password }}"
+      DB_DATABASE: myapp
+      DB_USERNAME: myapp
+      DB_PASSWORD: "{{ vault.db_passwords.myapp_postgres }}"
+      # Queue & Broadcast
       QUEUE_DRIVER: beanstalkd
+      BROADCAST_DRIVER: pusher
+      PUSHER_APP_ID: "{{ vault.pusher.app_id }}"
+      PUSHER_APP_KEY: "{{ vault.pusher.app_key }}"
+      PUSHER_APP_SECRET: "{{ vault.pusher.app_secret }}"
+      PUSHER_APP_CLUSTER: "{{ vault.pusher.cluster }}"
+      # Email
       MAIL_DRIVER: smtp
       MAIL_HOST: smtp.mailgun.org
-      MAIL_PORT: 25
-      MAIL_USERNAME: "{{ vault.mail_username }}"
-      MAIL_PASSWORD: "{{ vault.mail_password }}"
+      MAIL_PORT: 587
+      MAIL_USERNAME: "{{ vault.mail.username }}"
+      MAIL_PASSWORD: "{{ vault.mail.password }}"
       MAIL_ENCRYPTION: tls
-    passport: False
+    passport: True
     workers:
-      - "php artisan queue:work beanstalkd --daemon --env=production"
-    backup:
+      - "php artisan queue:work beanstalkd --daemon --queue=broadcast --env=production --tries=3 --sleep=1"
+      - "php artisan queue:work beanstalkd --daemon --queue=default --env=production --tries=3 --sleep=1"
+
+  myapp-frontend:
+    is_laravel: False
+    spa_routing: True
+    hosts:
+      - canonical: app.myapp.com
+    ssl:
       enabled: True
-      s3:
-        access_key_id: "{{ vault.s3.access_key_id }}"
-        secret_access_key: "{{ vault.s3.secret_access_key }}"
-        region: eu-central-1
-        bucket: laravan-com
-        path: backup
+      provider: letsencrypt
+    source:
+      url: git@github.com:acme/myapp-frontend
+      version: master
+      public_dir: dist

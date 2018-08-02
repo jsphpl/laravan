@@ -23,7 +23,7 @@
   with_dict: "{{ apps }}"
   tags: [letsencrypt_keys]
 
-- name: Generate the initial certificate
+- name: Generate initial certificates
   command: ./renew-certs.py
   args:
     chdir: "{{ acme_tiny_data_directory }}"

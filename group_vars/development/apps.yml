@@ -1,31 +1,28 @@
 ---
 apps:
-  laravan_com:
+  myapp:
     hosts:
-      - canonical: dev.laravan.com
+      - canonical: myapp.test
     ssl:
       enabled: True
       provider: self-signed
     source:
-      url: git@bitbucket.org:jsphpl/httping.git
+      url: git@github.com:acme/myapp.git
       version: master
     env:
-      APP_URL: https://dev.laravan.com
+      APP_URL: http://myapp.test
       APP_DEBUG: true
-      APP_KEY: base64:6o/p8iCCijvDHwBPNyAZxm9BFpHA4NlJQI8QvPGE9ww=
+      APP_KEY: "{{ vault.app_key }}"
+      DB_CONNECTION: pgsql
       DB_HOST: "127.0.0.1"
-      DB_DATABASE: laravan-com
-      DB_USERNAME: laravan-com
-      DB_PASSWORD: secret
-      QUEUE_DRIVER: beanstalkd
+      DB_DATABASE: myapp
+      DB_USERNAME: myapp
+      DB_PASSWORD: "{{ vault.db_passwords.myapp_postgres }}"
+      QUEUE_DRIVER: sync
       MAIL_DRIVER: smtp
       MAIL_HOST: mailtrap.io
-      MAIL_PORT: 2525
-      MAIL_USERNAME: "{{ vault.mail_username }}"
-      MAIL_PASSWORD: "{{ vault.mail_password }}"
+      MAIL_PORT: 587
+      MAIL_USERNAME: mailUsername@myapp.test
+      MAIL_PASSWORD: "{{ vault.mail.password }}"
       MAIL_ENCRYPTION: tls
     passport: False
-    workers:
-      - "php artisan queue:work beanstalkd --daemon --env=development"
-    backup:
-      enabled: False

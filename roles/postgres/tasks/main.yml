@@ -1,0 +1,44 @@
+---
+- name: Install key for Posgresql repository (Ubuntu)
+  apt_key:
+    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+    state: present
+  when: is_ubuntu == True and is_arm == False
+
+- name: Add Postgresql PPA (Ubuntu)
+  apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
+    update_cache: yes
+  when: is_ubuntu == True and is_arm == False
+
+- name: Install Postgresql
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - postgresql-9.6
+
+- name: Install pg_hba.conf file
+  template:
+    src: pg_hba.conf.j2
+    dest: /etc/postgresql/9.6/main/pg_hba.conf
+
+- name: Start Postgresql Server
+  service:
+    name: postgresql
+    state: restarted
+    enabled: true
+
+- name: Configure Postgresql root user
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: "{{ postgres_root_user }}"
+    password: "{{ vault.db_passwords.root }}"
+    role_attr_flags: SUPERUSER
+
+- name: Restart Postgresql Server
+  service:
+    name: postgresql
+    state: restarted
+    enabled: true

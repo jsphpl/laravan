@@ -14,8 +14,12 @@
       tags: [basics, swapfile]
     - role: network-basics
       tags: network-basics
+    - role: postgres
+      tags: [database, postgres]
+      when: postgres_required
     - role: mariadb
-      tags: mariadb
+      tags: [database, mariadb]
+      when: mariadb_required
     - role: php
       tags: php
     - role: nginx
@@ -24,6 +28,8 @@
       tags: composer
     - role: letsencrypt
       tags: [letsencrypt, certs]
+    - role: databases
+      tags: databases
     - role: per-app
       tags: per-app
     - role: logrotate
