@@ -11,3 +11,5 @@ needs_self_signed_cert: "{{ item.value.ssl.enabled and item.value.ssl.provider |
 is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial' }}"
 is_debian: "{{ ansible_distribution == 'Debian' }}"
 is_arm: "{{ ansible_machine == 'aarch64' or ansible_machine == 'armv7l' }}"
+
+app_php_version: "{{ item.value.php_version | default(php_version_default) }}"

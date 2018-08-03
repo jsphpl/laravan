@@ -5,7 +5,7 @@
 Laravan is capable of preparing a fresh Ubuntu 16.04 machine for running laravel apps by setting up the following components using Ansible:
 
 - Nginx
-- PHP 7.1
+- PHP 7.0, 7.1 & 7.2
 - MariaDB 10.2
 - PostgreSQL 9.6
 - Beanstalkd

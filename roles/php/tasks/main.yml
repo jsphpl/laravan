@@ -27,55 +27,46 @@
     update_cache: yes
   when: is_arm == True
 
-- name: "Install PHP {{php_version}}"
+- name: "Install PHP versions {{ ', '.join(php_versions) }}"
   apt:
-    name: "{{ item }}"
+    name: "php{{ item.0 }}-{{ item.1 }}"
     state: present
     force: yes
-  with_items:
-  - "php{{php_version}}-cli"
-  - "php{{php_version}}-common"
-  - "php{{php_version}}-curl"
-  - "php{{php_version}}-dev"
-  - "php{{php_version}}-fpm"
-  - "php{{php_version}}-gd"
-  - "php{{php_version}}-mbstring"
-  - "php{{php_version}}-mcrypt"
-  - "php{{php_version}}-mysql"
-  - "php{{php_version}}-pgsql"
-  - "php{{php_version}}-sqlite3"
-  - "php{{php_version}}-intl"
-  - "php{{php_version}}-opcache"
-  - "php{{php_version}}-xml"
-  - "php{{php_version}}-xmlrpc"
-  - "php{{php_version}}-zip"
+  with_nested:
+    -  "{{ php_versions }}"
+    -  "{{ php_packages }}"
 
-- name: "Start php{{php_version}}-fpm service"
+- name: "Start php-fpm service"
   service:
-    name: "php{{php_version}}-fpm"
+    name: "php{{ item }}-fpm"
     state: started
     enabled: true
+  with_items: "{{ php_versions }}"
 
 - name: Create socket directory
   file:
-    path: "/var/run/php{{php_version}}-fpm/"
+    path: "/var/run/php{{ item }}-fpm/"
     state: directory
+  with_items: "{{ php_versions }}"
 
 - name: Disable default pool
-  command: "mv /etc/php/{{php_version}}/fpm/pool.d/www.conf /etc/php/{{php_version}}/fpm/pool.d/www.disabled"
+  command: "mv /etc/php/{{ item }}/fpm/pool.d/www.conf /etc/php/{{ item }}/fpm/pool.d/www.disabled"
   args:
-    creates: "/etc/php/{{php_version}}/fpm/pool.d/www.disabled"
+    creates: "/etc/php/{{ item }}/fpm/pool.d/www.disabled"
   when: disable_default_pool
   notify: reload php-fpm
+  with_items: "{{ php_versions }}"
 
 - name: PHP configuration file
   template:
     src: php.ini.j2
-    dest: "/etc/php/{{php_version}}/fpm/php.ini"
+    dest: "/etc/php/{{ item }}/fpm/php.ini"
   notify: reload php-fpm
+  with_items: "{{ php_versions }}"
 
 - name: php-fpm configuration file
   template:
     src: php-fpm.conf.j2
-    dest: "/etc/php/{{php_version}}/fpm/pool.d/laravan.conf"
+    dest: "/etc/php/{{ item }}/fpm/pool.d/laravan.conf"
   notify: restart php-fpm
+  with_items: "{{ php_versions }}"

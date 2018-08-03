@@ -1,10 +1,12 @@
 ---
 - name: reload php-fpm
   service:
-    name: "php{{php_version}}-fpm"
+    name: "php{{ item }}-fpm"
     state: reloaded
+  with_items: "{{ php_versions }}"
 
 - name: restart php-fpm
   service:
-    name: "php{{php_version}}-fpm"
+    name: "php{{ item }}-fpm"
     state: restarted
+  with_items: "{{ php_versions }}"
