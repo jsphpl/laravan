@@ -15,7 +15,7 @@ It also brings some neat, optional stuff:
 
 - Single-command deployment of Laravel applications
 - Automatic database backups
-- SSL certificates via Letsencrypt
+- Free TLS certificates via letsencrypt
 - Supervisor for reliably running queue workers
 - Hosting of static pages and Single Page Applications
 

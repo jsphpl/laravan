@@ -50,6 +50,5 @@
       Let's Encrypt requires every domain/host be publicly accessible.
       Make sure that a valid DNS record exists for {{ item.failed_hosts | join(', ') }} and that they point to this server's IP.
       If you don't want these domains in your SSL certificate, then remove them from `hosts`.
-      See https://roots.io/trellis/docs/ssl for more details.
   when: not item | skipped and letsencrypt_test_challenges | failed
   with_items: "{{ letsencrypt_test_challenges.results }}"
