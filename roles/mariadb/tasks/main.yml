@@ -7,7 +7,7 @@
 
 - name: Add MariaDB PPA (Ubuntu)
   apt_repository:
-    repo: "deb [arch=amd64,i386,ppc64el] http://mirror.daniel-jost.net/mariadb/repo/10.2/ubuntu xenial main"
+    repo: "deb [arch=amd64,i386] https://mirrors.evowise.com/mariadb/repo/10.2/ubuntu xenial main"
     update_cache: yes
   when: is_ubuntu == True and is_arm == False
 
