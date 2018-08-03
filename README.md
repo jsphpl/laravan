@@ -1,4 +1,4 @@
-# Laravan [WIP]
+# Laravan
 
 **Ansible Playbooks for Laravel - machine provisioning and app deployment**
 
