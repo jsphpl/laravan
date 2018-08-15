@@ -13,5 +13,6 @@
   when: current_app.is_laravel | default(True)
 - include: optimize.yml
   when: current_app.is_laravel | default(True)
+- include: post-deploy.yml
 - include: finish.yml
 - include: restart-workers.yml

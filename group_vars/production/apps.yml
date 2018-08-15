@@ -48,6 +48,9 @@ apps:
     workers:
       - "php artisan queue:work beanstalkd --daemon --queue=broadcast --env=production --tries=3 --sleep=1"
       - "php artisan queue:work beanstalkd --daemon --queue=default --env=production --tries=3 --sleep=1"
+    post_deploy:
+      - "php artisan post-deploy-command"
+      - "php artisan another-post-deploy-command"
 
   myapp-frontend:
     is_laravel: False
