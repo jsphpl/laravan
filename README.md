@@ -21,6 +21,21 @@ It also brings some neat, optional stuff:
 
 This makes Laravan a viable alternative to paid tools like Forge or Envoyer. It can also be used to implement Continuous Integration/Deployment by running the playbooks from your CI server.
 
+## Table of Contents
+- [Getting Started](#getting-started)
+    - [1. Install Ansible](#1-install-ansible)
+    - [2. Prepare Server](#2-prepare-server)
+        - [Vagrant (optional)](#vagrant-optional)
+    - [3. Install Laravan](#3-install-laravan)
+    - [4. Link Machines](#4-link-machines)
+    - [5. Configure Applications](#5-configure-applications)
+    - [6. Configure Databases](#6-configure-databases)
+    - [7. Encrypt vault](#7-encrypt-vault)
+    - [8. Set ssh keys for web user](#8-set-ssh-keys-for-web-user)
+    - [9. Provision](#9-provision)
+    - [10. Deploy](#10-deploy)
+- [Credits](#credits)
+- [License](#license)
 
 ## Getting Started
 ### 1. Install Ansible
@@ -55,6 +70,9 @@ Open up `group_vars/{env}/apps.yml` and provide the necessary information for yo
 - `canonical:` holds the primary domain name under which your app will be available
 - `env:` those values will eventually be written into an `.env` file on the server
 
+### 6. Configure Databases
+Open up `group_vars/{env}/databases.yml` and configure the databases required for your apps. There is an example under `group_vars/production/databases.yml` to get you started.
+
 ### 7. Encrypt vault
 In order to prevent your production secrets from ending up as plain text in your git repositories, use the [ansible vault](http://docs.ansible.com/ansible/2.4/vault.html).
 
@@ -75,15 +93,15 @@ ansible-playbook provision.yml -e env=production
 ```
 
 ### 10. Deploy
-Again, on the local machine, run the following command to fetch your app from the git repository, install composer dependencies and run the migrations. The `app=myapp` variable refers to a key in the `group_vars/{env}/apps.yml` dictionary. 
+Again, on the local machine, run the following command to fetch your app from the git repository, install composer dependencies and run the migrations. The `app=myapp` variable refers to a key in the `group_vars/{env}/apps.yml` dictionary.
 
 ```bash
 ansible-playbook deploy.yml -e env=production -e app=myapp
 ```
 
-*Note: Replace the `example` in `app_name=example` with the key that your app is listed under in the `apps` object in `group_vars/{env}/apps.yml`*
+*Note: Replace `myapp` with the key that your app is listed under in the `apps` object in `group_vars/{env}/apps.yml`. Replace `production` with the environment you want to deploy to*
 
-In case deployment fails with an error message indicating a lack of access right to the git repository, make sure the ssh key configured in step (7.) is authorized with your git. There could also be a problem with with ssh agent-forwarding, which you can troubleshoot using this guide: [https://developer.github.com/v3/guides/using-ssh-agent-forwarding/](https://developer.github.com/v3/guides/using-ssh-agent-forwarding/).
+In case deployment fails with an error message indicating a lack of access right to the git repository, make sure that a local ssh key is authorized with the git remote of the app. There could also be a problem with with ssh agent-forwarding, which you can troubleshoot using this guide: [https://developer.github.com/v3/guides/using-ssh-agent-forwarding/](https://developer.github.com/v3/guides/using-ssh-agent-forwarding/).
 
 
 ## Credits
