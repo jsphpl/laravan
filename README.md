@@ -39,7 +39,7 @@ This makes Laravan a viable alternative to paid tools like Forge or Envoyer. It 
 
 ## Getting Started
 ### 1. Install Ansible
-Ansible needs to be installed on your **local machine** from which you're going to provision your servers and deploy your Laravel apps. Install instructions: [http://docs.ansible.com/ansible/2.4/intro_installation.html](http://docs.ansible.com/ansible/2.4/intro_installation.html)
+Ansible needs to be installed on your **local machine** from which you're going to provision your servers and deploy your Laravel apps. Install instructions: [http://docs.ansible.com/ansible/latest/intro_installation.html](http://docs.ansible.com/ansible/latest/intro_installation.html)
 
 ### 2. Prepare Server
 Boot up a fresh Ubuntu 16.04 (virtual) machine. Set up ssh keys for the root user and make sure you can log in from your local machine.
