@@ -13,7 +13,7 @@ Laravan is capable of preparing a fresh Ubuntu 16.04 machine for running laravel
 
 It also brings some neat, optional stuff:
 
-- Single-command deployment of Laravel applications
+- Single-command deployment of Laravel applications with rollback capability
 - Automatic database backups
 - Free TLS certificates via letsencrypt
 - Supervisor for reliably running queue workers
