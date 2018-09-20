@@ -11,6 +11,7 @@
 - name: Install docker-ce
   include_role:
     name: geerlingguy.docker
+  when: docker_required
 
 - name: Authenticate with docker registries
   docker_login:
