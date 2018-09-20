@@ -31,18 +31,25 @@ server {
     include acme-challenge-location.conf;
   {% endif %}
 
+  {% if (item.value.proxy | default(False)) and (item.value.ssl is defined and item.value.ssl.enabled | default(false)) -%}
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+  {% endif %}
+
   include includes.d/{{ item.key }}/*.conf;
   include laravan.conf;
 
-  {% if item.value.spa_routing | default(False) %}
     location / {
+    {% if item.value.spa_routing | default(False) %}
       try_files $uri $uri/ /index.html;
-    }
-  {% else %}
-    location / {
+    {% elseif item.value.proxy | default(False) %}
+      proxy_pass {{ item.value.upstream }};
+    {% else %}
       try_files $uri $uri/ /index.php$is_args$args;
+    {% endif %}
     }
-  {% endif %}
 
   location ~ \.php$ {
     try_files $uri /index.php =404;
