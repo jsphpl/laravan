@@ -26,6 +26,8 @@
       tags: nginx
     - role: geerlingguy.composer
       tags: composer
+    - role: docker
+      tags: docker
     - role: letsencrypt
       tags: [letsencrypt, certs]
     - role: databases
