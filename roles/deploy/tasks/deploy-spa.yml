@@ -1,0 +1,7 @@
+---
+- include: start.yml
+- include: clone.yml
+- include: env.yml
+  when: current_app.env is defined
+- include: post-deploy.yml
+- include: finish.yml

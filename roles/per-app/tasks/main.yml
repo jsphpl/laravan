@@ -3,7 +3,11 @@
   tags: certs
 - include: folders.yml
 - include: nginx.yml
+  when: item.value.type is not defined or
+        item.value.type == 'laravel' or
+        item.value.type == 'spa' or
+        (item.value.type == 'docker' and item.value.proxy_port is defined)
 - include: cron.yml
-  when: "{{ item.value.is_laravel | default(True) }}"
+  when: item.value.type == 'laravel' | default(True)
 - include: workers.yml
 - include: reload-nginx.yml

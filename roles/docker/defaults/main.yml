@@ -1,0 +1,2 @@
+---
+docker_required: "True in [{% for item in apps if item.type is defined and item.type == 'docker' %}{{ True }},{% endfor %}]"

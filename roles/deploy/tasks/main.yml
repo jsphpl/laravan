@@ -1,18 +1,7 @@
 ---
-- include: start.yml
-- include: clone.yml
-- include: files.yml
-  when: current_app.is_laravel | default(True)
-- include: env.yml
-  when: current_app.env is defined | default(False)
-- include: composer.yml
-  when: current_app.is_laravel | default(True)
-- include: passport.yml
-  when: "'passport' in current_app and current_app.passport == True"
-- include: migrate.yml
-  when: current_app.is_laravel | default(True)
-- include: optimize.yml
-  when: current_app.is_laravel | default(True)
-- include: post-deploy.yml
-- include: finish.yml
-- include: restart-workers.yml
+- include: deploy-laravel.yml
+  when: current_app.type is not defined or current_app.type == 'laravel'
+- include: deploy-spa.yml
+  when: current_app.type is defined and current_app.type == 'spa'
+- include: deploy-docker.yml
+  when: current_app.type is defined and current_app.type == 'docker'

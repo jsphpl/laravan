@@ -53,8 +53,7 @@ apps:
       - "php artisan another-post-deploy-command"
 
   myapp-frontend:
-    is_laravel: False
-    spa_routing: True
+    type: spa
     hosts:
       - canonical: app.myapp.com
     ssl:
@@ -64,3 +63,14 @@ apps:
       url: git@github.com:acme/myapp-frontend
       version: master
       public_dir: dist
+
+  myapp-frontend-docker:
+    type: docker
+    proxy_port: 3000
+    image: acme/myapp-frontend:latest
+    watch: False
+    restart: always
+    ports:
+      - 3000:3000
+    env:
+      NODE_ENV: production

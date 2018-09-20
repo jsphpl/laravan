@@ -1,0 +1,9 @@
+---
+#-------------------------------------------------------------------------------
+# Docker registry settings
+#-------------------------------------------------------------------------------
+docker_registries: []
+  # - url: https://index.docker.io/v1/
+  #   email: docker-admin@acme.com
+  #   username: acme
+  #   password: "{{ vault.docker_logins.acme }}"

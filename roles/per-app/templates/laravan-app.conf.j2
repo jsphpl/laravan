@@ -42,10 +42,10 @@ server {
   include laravan.conf;
 
     location / {
-    {% if item.value.spa_routing | default(False) %}
+    {% if item.type == 'spa' | default(False) %}
       try_files $uri $uri/ /index.html;
-    {% elseif item.value.proxy | default(False) %}
-      proxy_pass {{ item.value.upstream }};
+    {% elseif item.type == 'docker' | default(False) %}
+      proxy_pass http://localhost:{{ item.value.proxy_port }};
     {% else %}
       try_files $uri $uri/ /index.php$is_args$args;
     {% endif %}

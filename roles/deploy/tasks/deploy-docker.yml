@@ -1,0 +1,12 @@
+---
+- name: "Bring up docker container"
+  docker_container:
+    state: started
+    pull: True
+    name: "{{ app_name }}"
+    image: "{{ current_app.image }}"
+    restart_policy: "{{ current_app.restart | default(True) }}"
+    ports: "{{ current_app.ports | default([]) }}"
+    links: "{{ current_app.links | default([]) }}"
+    volumes: "{{ current_app.volumes | default([]) }}"
+    env: "{{ current_app.env | default([]) }}"

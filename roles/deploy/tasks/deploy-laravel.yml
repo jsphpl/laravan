@@ -1,0 +1,14 @@
+---
+- include: start.yml
+- include: clone.yml
+- include: files.yml
+- include: env.yml
+  when: current_app.env is defined
+- include: composer.yml
+- include: passport.yml
+  when: current_app.passport is defined and current_app.passport == True
+- include: migrate.yml
+- include: optimize.yml
+- include: post-deploy.yml
+- include: finish.yml
+- include: restart-workers.yml
