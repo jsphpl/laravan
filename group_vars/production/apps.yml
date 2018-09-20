@@ -4,13 +4,13 @@ apps:
   # in order to specify which app you want to deploy.
   myapp-backend:
     hosts:
-      - canonical: api.myapp.com
+      - canonical: api.acme.com
         # HTTP redirects to the canonical domain will be set up for the following domains:
         # In case TLS is enabled, certificates will be provisioned for all domains.
         # You can delete them entirely, if you don't need any redirects set up.
         redirects:
-          - api-v1.myapp.com
-          - api-v2.myapp.com
+          - api-v1.acme.com
+          - api-v2.acme.com
     ssl:
       enabled: True
       provider: letsencrypt
@@ -21,7 +21,7 @@ apps:
       # App
       APP_NAME: MyApp
       APP_ENV: production
-      APP_URL: https://api.myapp.com
+      APP_URL: https://api.acme.com
       APP_DEBUG: false
       APP_KEY: "{{ vault.app_key }}"
       # Database
@@ -55,7 +55,7 @@ apps:
   myapp-frontend:
     type: spa
     hosts:
-      - canonical: app.myapp.com
+      - canonical: app.acme.com
     ssl:
       enabled: True
       provider: letsencrypt
@@ -66,6 +66,8 @@ apps:
 
   myapp-frontend-docker:
     type: docker
+    hosts:
+      - canonical: dockerapp.acme.com
     proxy_port: 3000
     image: acme/myapp-frontend:latest
     watch: False
