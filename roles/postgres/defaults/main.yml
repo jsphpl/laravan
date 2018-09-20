@@ -1,2 +1,2 @@
-postgres_required: "True in [{% for item in databases if item.type == 'postgres' %}{{ True }},{% endfor %}]"
+postgres_required: "'postgres' in [{% for item in databases %}'{{ item.type | default('') }}',{% endfor %}]"
 postgres_root_user: postgres

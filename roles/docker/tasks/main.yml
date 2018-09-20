@@ -8,6 +8,10 @@
   tags: essential-packages
   when: docker_required
 
+- name: Debug
+  debug:
+    var: docker_required
+
 - name: Install docker-ce
   include_role:
     name: geerlingguy.docker
@@ -20,4 +24,4 @@
     username: "{{ item.username }}"
     password: "{{ item.password }}"
   when: docker_required
-  with_items: docker_registries | default([])
+  loop: "{{ docker_registries | default([]) }}"
