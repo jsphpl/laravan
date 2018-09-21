@@ -16,12 +16,3 @@
   include_role:
     name: geerlingguy.docker
   when: docker_required
-
-- name: Authenticate with docker registries
-  docker_login:
-    url: "{{ item.url | default('https://index.docker.io/v1/')}}"
-    email: "{{ item.email | default(None) }}"
-    username: "{{ item.username }}"
-    password: "{{ item.password }}"
-  when: docker_required
-  loop: "{{ docker_registries | default([]) }}"
