@@ -7,3 +7,4 @@
     job: "cd {{ webroot }}/{{ item.key }}/current && php artisan schedule:run"
     cron_file: "laravan-{{ item.key | replace('.', '_') }}"
   with_dict: "{{ apps }}"
+  when: item.value.type is not defined or item.value.type == 'laravel'

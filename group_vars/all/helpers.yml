@@ -6,7 +6,13 @@ app_hosts_canonical: "{{ item.value.hosts | map(attribute='canonical') | list }}
 app_hosts_redirects: "{{ item.value.hosts | selectattr('redirects', 'defined') | sum(attribute='redirects', start=[]) | list }}"
 app_hosts: "{{ app_hosts_canonical | union(app_hosts_redirects) }}"
 
-needs_self_signed_cert: "{{ item.value.ssl.enabled and item.value.ssl.provider | default('manual') == 'self-signed' }}"
+app_needs_nginx: item.value.type is not defined or
+                 item.value.type == 'laravel' or
+                 item.value.type == 'spa' or
+                 (item.value.type == 'docker' and item.value.proxy_port is defined)
+
+ssl_enabled: "{{ item.value.ssl is defined and item.value.ssl.enabled is defined and item.value.ssl.enabled }}"
+needs_self_signed_cert: "{{ ssl_enabled and item.value.ssl.provider is defined and item.value.ssl.provider == 'self-signed' }}"
 
 is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial' }}"
 is_debian: "{{ ansible_distribution == 'Debian' }}"
