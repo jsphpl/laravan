@@ -8,8 +8,8 @@ server {
   {% endif %}
 
   server_name  {% for host in app_hosts_canonical %}{{ host }} {% endfor %};
-  # access_log   {{ webroot }}/{{ item.key }}/logs/access.log;
-  # error_log    {{ webroot }}/{{ item.key }}/logs/error.log;
+  access_log   {{ webroot }}/{{ item.key }}/logs/access.log;
+  error_log    {{ webroot }}/{{ item.key }}/logs/error.log;
 
   root  {{ webroot }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/{% if item.value.source is defined %}{{ item.value.source.public_dir | default('public') }}{% endif %};
   index index.php index.htm index.html;
