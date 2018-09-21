@@ -9,4 +9,4 @@
     ports: "{{ current_app.ports | default([]) }}"
     links: "{{ current_app.links | default([]) }}"
     volumes: "{{ current_app.volumes | default([]) }}"
-    env: "{{ current_app.env | default([]) }}"
+    env: "{{ current_app.env | default({}) }}"
