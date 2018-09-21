@@ -33,7 +33,7 @@
     - role: databases
       tags: databases
     - role: per-app
-      tags: per-app
+      tags: [per-app, letsencrypt]
     - role: logrotate
       tags: [logrotate, per-app]
     - role: queue
