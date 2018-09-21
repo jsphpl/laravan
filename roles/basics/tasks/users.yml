@@ -1,4 +1,11 @@
 ---
+- name: Create groups
+  group:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    "{{ groups }}"
+
 - name: Create users
   user:
     name: "{{ item.name }}"
