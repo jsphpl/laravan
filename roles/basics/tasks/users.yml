@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: present
   with_items:
-    "{{ groups }}"
+    "{{ user_groups }}"
 
 - name: Create users
   user:
