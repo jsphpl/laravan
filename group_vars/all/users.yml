@@ -5,6 +5,7 @@
 users:
   - name: "{{ web_user }}"
     groups:
+      - docker
       - "{{ web_group }}"
     keys:
 # Uncomment and edit either of the following lines in order to authorize yourself to log in as the "web" user on the servers.
