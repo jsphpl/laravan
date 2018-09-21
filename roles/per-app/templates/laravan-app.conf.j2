@@ -11,7 +11,7 @@ server {
   # access_log   {{ webroot }}/{{ item.key }}/logs/access.log;
   # error_log    {{ webroot }}/{{ item.key }}/logs/error.log;
 
-  root  {{ webroot }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/{{ item.value.source.public_dir | default('public') }};
+  root  {{ webroot }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/{% if item.value.source is defined %}{{ item.value.source.public_dir | default('public') }}{% endif %};
   index index.php index.htm index.html;
 
   charset utf-8;
@@ -42,9 +42,9 @@ server {
   include laravan.conf;
 
     location / {
-    {% if item.type == 'spa' | default(False) %}
+    {% if item.value.type is defined and item.value.type == 'spa' %}
       try_files $uri $uri/ /index.html;
-    {% elseif item.type == 'docker' | default(False) %}
+    {% elif item.value.type is defined and item.value.type == 'docker' %}
       proxy_pass http://localhost:{{ item.value.proxy_port }};
     {% else %}
       try_files $uri $uri/ /index.php$is_args$args;
