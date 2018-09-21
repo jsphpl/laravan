@@ -61,7 +61,7 @@
     dest: "{{ nginx_path }}/sites-available/{{ item.key }}.conf"
   with_dict: "{{ apps }}"
   notify: reload nginx
-  tags: certs
+  tags: [certs, letsencrypt]
 
 - name: Enable Laravan site
   file:
