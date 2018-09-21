@@ -5,7 +5,6 @@
     email: "{{ item.email | default(None) }}"
     username: "{{ item.username }}"
     password: "{{ item.password }}"
-  when: docker_required
   loop: "{{ docker_registries | default([]) }}"
 
 - name: "Bring up docker container"
