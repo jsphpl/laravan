@@ -1,6 +1,6 @@
 - nickhammond.logrotate,master
 - geerlingguy.composer,1.6.1
 - geerlingguy.docker,2.5.1
-- debops.ferm,v0.3.0
+- debops.ferm,v0.8.0
 - geerlingguy.ntp,1.5.2
 - kamaln7.swapfile,master
