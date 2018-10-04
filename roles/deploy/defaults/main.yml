@@ -6,7 +6,9 @@ laravel_shared_folders:
   - storage/framework/cache
   - storage/framework/sessions
   - storage/framework/views
+extra_shared_folders: "{{ current_app.extra_shared_folders | default([]) }}"
 
 laravel_shared_symlinks:
   - { path: "storage", src: "storage" }
   - { path: "public/storage", src: "storage/app/public" }
+extra_symlinks: "{{ current_app.extra_symlinks | default([]) }}"
