@@ -5,7 +5,3 @@
 
 # Additional open ports (besides 22, 80 & 443)
 open_ports: []
-
-# SSHD config
-sshd_permit_root_login: true
-sshd_password_authentication: false
