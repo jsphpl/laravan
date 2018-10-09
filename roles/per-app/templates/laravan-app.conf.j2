@@ -16,6 +16,11 @@ server {
 
   charset utf-8;
 
+  {% if app_uses_auth_basic -%}
+    auth_basic           "Password Required";
+    auth_basic_user_file {{ auth_basic_htpasswd_file }};
+  {% endif %}
+
   {% if env == 'development' -%}
   # See Virtualbox section at http://wiki.nginx.org/Pitfalls
   sendfile off;

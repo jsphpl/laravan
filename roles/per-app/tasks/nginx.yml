@@ -55,6 +55,14 @@
     dest: "{{ nginx_path }}/acme-challenge-location.conf"
   notify: reload nginx
 
+- name: Create user file for auth basic
+  htpasswd:
+    path: "{{ auth_basic_htpasswd_file }}"
+    name: "{{ item.value.auth_basic.username }}"
+    password: "{{ item.value.auth_basic.password }}"
+  when: app_uses_auth_basic
+  with_dict: "{{ apps }}"
+
 - name: Create Laravan configurations for Nginx
   template:
     src: "laravan-app.conf.j2"

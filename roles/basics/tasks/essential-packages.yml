@@ -16,6 +16,7 @@
   - python-mysqldb
   - python-pycurl
   - python-psycopg2
+  - python-passlib
   - python3-software-properties
   - apt-transport-https
   - lsb-release

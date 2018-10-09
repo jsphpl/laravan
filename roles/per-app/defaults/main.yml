@@ -1,0 +1,3 @@
+---
+app_uses_auth_basic: "{{ 'auth_basic' in item.value and item.value.auth_basic.enabled | default(False) }}"
+auth_basic_htpasswd_file: "{{ nginx_path }}/htpasswd-{{ item.key | regex_replace('[^a-zA-Z]+', '_') }}"
