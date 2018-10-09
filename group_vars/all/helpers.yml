@@ -14,7 +14,7 @@ app_needs_nginx: item.value.type is not defined or
 ssl_enabled: "{{ item.value.ssl is defined and item.value.ssl.enabled is defined and item.value.ssl.enabled }}"
 needs_self_signed_cert: "{{ ssl_enabled and item.value.ssl.provider is defined and item.value.ssl.provider == 'self-signed' }}"
 
-is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial' }}"
+is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and (ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic') }}"
 is_debian: "{{ ansible_distribution == 'Debian' }}"
 is_arm: "{{ ansible_machine == 'aarch64' or ansible_machine == 'armv7l' }}"
 

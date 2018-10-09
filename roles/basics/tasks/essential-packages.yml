@@ -9,17 +9,18 @@
     name: "{{ item }}"
     state: present
   with_items:
-  - build-essential
-  - curl
-  - vim
-  - git-core
-  - python-mysqldb
-  - python-pycurl
-  - python-psycopg2
-  - python-passlib
-  - python3-software-properties
   - apt-transport-https
-  - lsb-release
+  - build-essential
   - ca-certificates
+  - curl
+  - git-core
   - graphviz
+  - lsb-release
+  - python-mysqldb
+  - python-passlib
+  - python-psycopg2
+  - python-pycurl
+  - python3-software-properties
+  - sudo
+  - vim
   tags: essential-packages
