@@ -1,3 +1,5 @@
+php_required: "'laravel' in [{% for item in apps %}'{{ item.type | default('') }}',{% endfor %}]"
+
 disable_default_pool: true
 memcached_sessions: false
 

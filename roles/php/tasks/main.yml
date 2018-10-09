@@ -1,31 +1,27 @@
 ---
-- name: Print machine info
-  debug:
-    msg: "{{ansible_machine}}"
-
 - name: Add PHP PPA (Ubuntu)
   apt_repository:
     repo: "ppa:ondrej/php"
     update_cache: yes
-  when: is_ubuntu == True and is_arm == False
+  when: php_required and is_ubuntu == True and is_arm == False
 
 - name: Install key for PHP repository (Debian)
   get_url:
     url: https://packages.sury.org/php/apt.gpg
     dest: /etc/apt/trusted.gpg.d/php.gpg
-  when: is_debian == True and is_arm == False
+  when: php_required and is_debian == True and is_arm == False
 
 - name: Add PHP Repository (Debian)
   apt_repository:
     repo: "deb https://packages.sury.org/php {{ ansible_distribution_release }} main"
     update_cache: yes
-  when: is_debian == True and is_arm == False
+  when: php_required and is_debian == True and is_arm == False
 
 - name: Add PHP Repository (ARM)
   apt_repository:
     repo: "deb http://mirrordirector.raspbian.org/raspbian/ buster main contrib non-free rpi"
     update_cache: yes
-  when: is_arm == True
+  when: php_required and is_arm == True
 
 - name: "Install PHP versions {{ ', '.join(php_versions) }}"
   apt:
@@ -35,6 +31,7 @@
   with_nested:
     -  "{{ php_versions }}"
     -  "{{ php_packages }}"
+  when: php_required
 
 - name: "Start php-fpm service"
   service:
@@ -42,18 +39,20 @@
     state: started
     enabled: true
   with_items: "{{ php_versions }}"
+  when: php_required
 
 - name: Create socket directory
   file:
     path: "/var/run/php{{ item }}-fpm/"
     state: directory
   with_items: "{{ php_versions }}"
+  when: php_required
 
 - name: Disable default pool
   command: "mv /etc/php/{{ item }}/fpm/pool.d/www.conf /etc/php/{{ item }}/fpm/pool.d/www.disabled"
   args:
     creates: "/etc/php/{{ item }}/fpm/pool.d/www.disabled"
-  when: disable_default_pool
+  when: php_required and disable_default_pool
   notify: reload php-fpm
   with_items: "{{ php_versions }}"
 
@@ -63,6 +62,7 @@
     dest: "/etc/php/{{ item }}/fpm/php.ini"
   notify: reload php-fpm
   with_items: "{{ php_versions }}"
+  when: php_required
 
 - name: php-fpm configuration file
   template:
@@ -70,3 +70,4 @@
     dest: "/etc/php/{{ item }}/fpm/pool.d/laravan.conf"
   notify: restart php-fpm
   with_items: "{{ php_versions }}"
+  when: php_required
