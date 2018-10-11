@@ -7,7 +7,12 @@
     password: "{{ item.password }}"
   loop: "{{ docker_registries | default([]) }}"
 
-- name: "Bring up docker container"
+- name: Create docker networks
+  docker_network:
+    name: "{{ item }}"
+  loop: "{{ docker_networks }}"
+
+- name: Bring up docker container
   docker_container:
     state: started
     pull: True
@@ -18,3 +23,4 @@
     links: "{{ current_app.links | default([]) }}"
     volumes: "{{ current_app.volumes | default([]) }}"
     env: "{{ current_app.env | default({}) }}"
+    networks: "{{ current_app.networks | default({}) }}"
