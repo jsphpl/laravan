@@ -36,13 +36,6 @@ server {
     include acme-challenge-location.conf;
   {% endif %}
 
-  {% if (item.value.proxy | default(False)) and (item.value.ssl is defined and item.value.ssl.enabled | default(false)) -%}
-    proxy_set_header        Host $host;
-    proxy_set_header        X-Real-IP $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header        X-Forwarded-Proto $scheme;
-  {% endif %}
-
   include includes.d/{{ item.key }}/*.conf;
 
   {% if item.value.type is defined and item.value.type == 'spa' -%}
@@ -51,6 +44,11 @@ server {
     try_files $uri $uri/ /index.html;
   }
   {% elif item.value.type is defined and item.value.type == 'docker' -%}
+  proxy_set_header        Host $host;
+  proxy_set_header        X-Real-IP $remote_addr;
+  proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header        X-Forwarded-Proto $scheme;
+
   location / {
     proxy_pass http://localhost:{{ item.value.proxy_port }};
   }
