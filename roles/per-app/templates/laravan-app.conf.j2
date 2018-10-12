@@ -44,17 +44,21 @@ server {
   {% endif %}
 
   include includes.d/{{ item.key }}/*.conf;
-  include laravan.conf;
 
-    location / {
-    {% if item.value.type is defined and item.value.type == 'spa' %}
-      try_files $uri $uri/ /index.html;
-    {% elif item.value.type is defined and item.value.type == 'docker' %}
-      proxy_pass http://localhost:{{ item.value.proxy_port }};
-    {% else %}
-      try_files $uri $uri/ /index.php$is_args$args;
-    {% endif %}
-    }
+  {% if item.value.type is defined and item.value.type == 'spa' -%}
+  include laravan.conf;
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+  {% elif item.value.type is defined and item.value.type == 'docker' -%}
+  location / {
+    proxy_pass http://localhost:{{ item.value.proxy_port }};
+  }
+  {% else -%}
+  include laravan.conf;
+  location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+  }
 
   location ~ \.php$ {
     try_files $uri /index.php =404;
@@ -79,6 +83,8 @@ server {
     fastcgi_pass unix:/var/run/php{{ app_php_version }}-fpm/laravan.sock;
     fastcgi_index index.php;
   }
+  {% endif -%}
+
 }
 
 {% if item.value.ssl is defined and item.value.ssl.enabled | default(false) %}
