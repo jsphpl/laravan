@@ -1,7 +1,7 @@
 ---
-- include: deploy-laravel.yml
+- include_tasks: deploy-laravel.yml
   when: current_app.type is not defined or current_app.type == 'laravel'
-- include: deploy-spa.yml
+- include_tasks: deploy-spa.yml
   when: current_app.type is defined and current_app.type == 'spa'
-- include: deploy-docker.yml
+- include_tasks: deploy-docker.yml
   when: current_app.type is defined and current_app.type == 'docker'
