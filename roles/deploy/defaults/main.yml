@@ -13,4 +13,4 @@ laravel_shared_symlinks:
   - { path: "public/storage", src: "storage/app/public" }
 extra_symlinks: "{{ current_app.extra_symlinks | default([]) }}"
 
-docker_networks: "{{ current_app | json_query('networks[*].name') }}"
+docker_networks: "{{ (current_app | json_query('networks[*].name')) or [] }}"

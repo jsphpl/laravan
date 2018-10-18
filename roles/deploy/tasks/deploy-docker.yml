@@ -23,4 +23,4 @@
     links: "{{ current_app.links | default([]) }}"
     volumes: "{{ current_app.volumes | default([]) }}"
     env: "{{ current_app.env | default({}) }}"
-    networks: "{{ current_app.networks | default({}) }}"
+    networks: "{{ current_app.networks | default([]) }}"
