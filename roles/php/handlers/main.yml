@@ -3,10 +3,10 @@
   service:
     name: "php{{ item }}-fpm"
     state: reloaded
-  with_items: "{{ php_versions }}"
+  with_items: "{{ php_versions_required }}"
 
 - name: restart php-fpm
   service:
     name: "php{{ item }}-fpm"
     state: restarted
-  with_items: "{{ php_versions }}"
+  with_items: "{{ php_versions_required }}"

@@ -1,13 +1,14 @@
 php_required: "'laravel' in [{% for item in apps %}'{{ item.type | default('laravel') }}',{% endfor %}]"
+php_versions_required: "[{% for item in laravel_apps %}'{{ item.php_version if 'version' in item else php_version_default }}',{% endfor %}]"
 
 disable_default_pool: true
 memcached_sessions: false
 
+php_version_default: "7.2"
 php_versions:
   - "7.0"
   - "7.1"
   - "7.2"
-php_version_default: "7.2"
 
 php_packages:
   - "bcmath"

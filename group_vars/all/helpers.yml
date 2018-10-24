@@ -10,12 +10,14 @@ app_needs_nginx: item.value.type is not defined or
                  item.value.type == 'laravel' or
                  item.value.type == 'spa' or
                  (item.value.type == 'docker' and item.value.proxy_port is defined)
+app_php_version: "{{ item.value.php_version | default(php_version_default) }}"
 
 ssl_enabled: "{{ item.value.ssl is defined and item.value.ssl.enabled is defined and item.value.ssl.enabled }}"
 needs_self_signed_cert: "{{ ssl_enabled and item.value.ssl.provider is defined and item.value.ssl.provider == 'self-signed' }}"
+
+laravel_apps: "{{ apps.values() | json_query('[? type==`laravel`||type==None]') }}"
 
 is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and (ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic') }}"
 is_debian: "{{ ansible_distribution == 'Debian' }}"
 is_arm: "{{ ansible_machine == 'aarch64' or ansible_machine == 'armv7l' }}"
 
-app_php_version: "{{ item.value.php_version | default(php_version_default) }}"
