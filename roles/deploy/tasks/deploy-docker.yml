@@ -1,11 +1,11 @@
 ---
-- name: Authenticate with docker registries
+- name: Authenticate with docker registry
   docker_login:
-    url: "{{ item.url | default('https://index.docker.io/v1/')}}"
-    email: "{{ item.email | default(None) }}"
-    username: "{{ item.username }}"
-    password: "{{ item.password }}"
-  loop: "{{ docker_registries | default([]) }}"
+    url: "{{ current_app.login.url | default('https://index.docker.io/v1/')}}"
+    email: "{{ current_app.login.email | default(None) }}"
+    username: "{{ current_app.login.username }}"
+    password: "{{ current_app.login.password }}"
+  when: "{{ 'login' in current_app and 'username' in current_app.login and 'password' in current_app.login }}"
 
 - name: Create docker networks
   docker_network:
