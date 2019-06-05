@@ -1,3 +1,10 @@
 ---
+# Auth Basic
 app_uses_auth_basic: "{{ 'auth_basic' in item.value and item.value.auth_basic.enabled | default(False) }}"
 auth_basic_htpasswd_file: "{{ nginx_path }}/htpasswd-{{ item.key | regex_replace('[^a-zA-Z]+', '_') }}"
+
+# Nginx includes
+nginx_includes_templates_path: nginx-includes
+nginx_includes_deprecated: roles/per-app/templates/includes.d
+nginx_includes_pattern: "^({{ nginx_includes_templates_path | regex_escape }}|{{ nginx_includes_deprecated | regex_escape }})/(.*)\\.j2$"
+nginx_includes_d_cleanup: true

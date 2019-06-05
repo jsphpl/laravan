@@ -1,8 +1,9 @@
 ---
-- include: self-signed-certificate.yml
+- import_tasks: self-signed-certificate.yml
   tags: certs
-- include: folders.yml
-- include: nginx.yml
-- include: cron.yml
-- include: workers.yml
-- include: reload-nginx.yml
+- import_tasks: folders.yml
+- import_tasks: nginx-includes.yml
+- import_tasks: nginx.yml
+- import_tasks: cron.yml
+- import_tasks: workers.yml
+- import_tasks: reload-nginx.yml
