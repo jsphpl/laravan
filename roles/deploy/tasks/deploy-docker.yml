@@ -24,3 +24,6 @@
     volumes: "{{ current_app.volumes | default([]) }}"
     env: "{{ current_app.env | default({}) }}"
     networks: "{{ current_app.networks | default([]) }}"
+
+- import_tasks: post-deploy-docker.yml
+

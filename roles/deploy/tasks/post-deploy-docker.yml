@@ -1,0 +1,6 @@
+---
+- name: Run post-deploy commands
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ webroot }}/{{ app_name }}"
+  loop: "{{ current_app.post_deploy | default([]) }}"

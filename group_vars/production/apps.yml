@@ -76,3 +76,5 @@ apps:
       - 3000:3000
     env:
       NODE_ENV: production
+    post_deploy:
+      - "docker image prune -af"
