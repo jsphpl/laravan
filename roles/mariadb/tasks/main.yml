@@ -13,11 +13,10 @@
 
 - name: Install MariaDB
   apt:
-    name: "{{ item }}"
+    name:
+      - mariadb-client
+      - mariadb-server
     state: present
-  with_items:
-    - mariadb-client
-    - mariadb-server
 
 - name: Disable MySQL binary logging
   template:

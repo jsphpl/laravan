@@ -6,21 +6,20 @@
 
 - name: Install some essential packages
   apt:
-    name: "{{ item }}"
+    name:
+      - apt-transport-https
+      - build-essential
+      - ca-certificates
+      - curl
+      - git-core
+      - graphviz
+      - lsb-release
+      - python-mysqldb
+      - python-passlib
+      - python-psycopg2
+      - python-pycurl
+      - python3-software-properties
+      - sudo
+      - vim
     state: present
-  with_items:
-  - apt-transport-https
-  - build-essential
-  - ca-certificates
-  - curl
-  - git-core
-  - graphviz
-  - lsb-release
-  - python-mysqldb
-  - python-passlib
-  - python-psycopg2
-  - python-pycurl
-  - python3-software-properties
-  - sudo
-  - vim
   tags: essential-packages
