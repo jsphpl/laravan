@@ -4,11 +4,12 @@ php_versions_required: "[{% for item in laravel_apps %}'{{ item.php_version if '
 disable_default_pool: true
 memcached_sessions: false
 
-php_version_default: "7.2"
+php_version_default: "7.3"
 php_versions:
   - "7.0"
   - "7.1"
   - "7.2"
+  - "7.3"
 
 php_packages:
   - "bcmath"
