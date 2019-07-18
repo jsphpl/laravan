@@ -25,12 +25,9 @@
 
 - name: "Install PHP version(s) {{ ', '.join(php_versions_required) }}"
   apt:
-    name: "php{{ item.0 }}-{{ item.1 }}"
+    name: "{{ php_packages_times_versions }}"
     state: present
     force: yes
-  with_nested:
-    - "{{ php_versions_required }}"
-    - "{{ php_packages }}"
 
 - name: "Start php-fpm service"
   service:

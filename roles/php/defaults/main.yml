@@ -1,5 +1,6 @@
 php_required: "'laravel' in [{% for item in apps %}'{{ item.type | default('laravel') }}',{% endfor %}]"
-php_versions_required: "[{% for item in laravel_apps %}'{{ item.php_version if 'version' in item else php_version_default }}',{% endfor %}]"
+php_versions_used: "[{% for item in laravel_apps %}'{{ item.php_version if 'php_version' in item else php_version_default }}',{% endfor %}]"
+php_versions_required: "{{ php_versions_used | unique }}"
 
 disable_default_pool: true
 memcached_sessions: false
@@ -28,6 +29,8 @@ php_packages:
   - "xml"
   - "xmlrpc"
   - "zip"
+
+php_packages_times_versions: "[{% for item in php_versions_required | product(php_packages) | list %}'php{{item.0}}-{{item.1}}',{%endfor%}]"
 
 php_error_reporting: 'E_ALL & ~E_DEPRECATED & ~E_STRICT'
 php_display_errors: 'Off'

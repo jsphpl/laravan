@@ -15,7 +15,9 @@ app_php_version: "{{ item.value.php_version | default(php_version_default) }}"
 ssl_enabled: "{{ item.value.ssl is defined and item.value.ssl.enabled is defined and item.value.ssl.enabled }}"
 needs_self_signed_cert: "{{ ssl_enabled and item.value.ssl.provider is defined and item.value.ssl.provider == 'self-signed' }}"
 
-laravel_apps: "{{ apps.values() | json_query('[? type==`laravel`||type==None]') }}"
+laravel_apps: "{{ apps.values() | flatten | json_query('[? type==`laravel`||type==None]') }}"
+
+
 
 is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and (ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic') }}"
 is_debian: "{{ ansible_distribution == 'Debian' }}"
