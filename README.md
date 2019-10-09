@@ -2,7 +2,7 @@
 
 **Ansible Playbooks for Laravel - machine provisioning and app deployment**
 
-Laravan is capable of preparing a fresh Ubuntu 16.04 machine for running laravel apps by setting up the following components using Ansible:
+Laravan is capable of preparing a fresh Ubuntu 16.04 / 18.04 machine for running laravel apps and docker containers by setting up the following components using Ansible:
 
 - Nginx
 - PHP 7.0, 7.1, 7.2 & 7.3
@@ -13,6 +13,7 @@ Laravan is capable of preparing a fresh Ubuntu 16.04 machine for running laravel
 
 It also brings some neat, optional stuff:
 
+- Run services in docker containers and expose them via https through a reverse proxy
 - Single-command deployment of Laravel applications with rollback capability
 - Automatic database backups
 - Free TLS certificates via letsencrypt
