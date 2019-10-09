@@ -7,19 +7,20 @@
 
 - name: Add Postgresql PPA (Ubuntu)
   apt_repository:
-    repo: "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
+    repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
     update_cache: yes
   when: is_ubuntu == True and is_arm == False
 
 - name: Install Postgresql
   apt:
-    name: postgresql-9.6
+    update_cache: yes
+    name: postgresql-{{ postgres_version }}
     state: present
 
 - name: Install pg_hba.conf file
   template:
     src: pg_hba.conf.j2
-    dest: /etc/postgresql/9.6/main/pg_hba.conf
+    dest: /etc/postgresql/{{ postgres_version }}/main/pg_hba.conf
 
 - name: Start Postgresql Server
   service:

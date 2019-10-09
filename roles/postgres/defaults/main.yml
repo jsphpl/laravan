@@ -1,2 +1,3 @@
 postgres_required: "'postgres' in [{% for item in databases %}'{{ item.type | default('') }}',{% endfor %}]"
 postgres_root_user: postgres
+postgres_version: 11

@@ -6,8 +6,8 @@ Laravan is capable of preparing a fresh Ubuntu 16.04 machine for running laravel
 
 - Nginx
 - PHP 7.0, 7.1, 7.2 & 7.3
-- MariaDB 10.2
-- PostgreSQL 9.6
+- MariaDB 10
+- PostgreSQL 11
 - Beanstalkd
 - Redis
 
