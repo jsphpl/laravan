@@ -33,12 +33,14 @@
 
 - name: Configure cron to run our backups daily
   cron:
-    name: "laravan-backup-{{ item.name.replace('.', '_') }}"
+    name: "Laravan Backup {{ item.name }}"
+    cron_file: "laravan-backup-{{ item.name.replace('.', '_') }}"
     job: "nice -n 20 /usr/local/bin/backup perform --trigger \"{{ item.name | regex_replace('[^a-zA-Z]+', '_') }}\" --config-file \"{{ backup_setup.config_dir }}/config.rb\" --data-path \"{{ backup_setup.data_dir }}\" --tmp-path \"{{ backup_setup.tmp_dir }}\" > \"{{ backup_setup.log_dir }}/backup-{{ item.name | regex_replace('[^a-zA-Z]+', '_') }}-{{ item.type }}.log\" 2>&1"
     month: "{{ item.backup.month | default('*') }}"
     day:  "{{ item.backup.day | default('*') }}"
     hour: "{{ item.backup.hour | default(0) }}"
     minute: "{{ item.backup.minute | default(0) }}"
     weekday: "{{ item.backup.weekday | default('*') }}"
+    user: root
   with_items: "{{ databases }}"
   when: "'backup' in item"
