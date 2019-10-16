@@ -32,11 +32,13 @@
   when: "'backup' in item"
 
 - name: Configure cron to run our backups daily
-  template:
-    src:   cron.j2
-    dest:  "/etc/cron.daily/backup-{{ item.name.replace('.', '_') }}"
-    owner: "{{ backup_setup.user }}"
-    group: "{{ backup_setup.user }}"
-    mode:  0700
+  cron:
+    name: "laravan-backup-{{ item.name.replace('.', '_') }}"
+    job: "nice -n 20 /usr/local/bin/backup perform --trigger \"{{ item.name | regex_replace('[^a-zA-Z]+', '_') }}\" --config-file \"{{ backup_setup.config_dir }}/config.rb\" --data-path \"{{ backup_setup.data_dir }}\" --tmp-path \"{{ backup_setup.tmp_dir }}\" > \"{{ backup_setup.log_dir }}/backup-{{ item.name | regex_replace('[^a-zA-Z]+', '_') }}-{{ item.type }}.log\" 2>&1"
+    month: "{{ item.backup.month | default('*') }}"
+    day:  "{{ item.backup.day | default('*') }}"
+    hour: "{{ item.backup.hour | default(0) }}"
+    minute: "{{ item.backup.minute | default(0) }}"
+    weekday: "{{ item.backup.weekday | default('*') }}"
   with_items: "{{ databases }}"
   when: "'backup' in item"
