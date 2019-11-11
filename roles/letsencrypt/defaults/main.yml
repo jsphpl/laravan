@@ -1,4 +1,4 @@
-apps_using_letsencrypt: "[{% for name, app in apps.items() | list if app.ssl.enabled and app.ssl.provider | default('manual') == 'letsencrypt' %}'{{ name }}',{% endfor %}]"
+apps_using_letsencrypt: "[{% for name, app in apps.items() | list if app.ssk is defined and app.ssl.enabled and app.ssl.provider | default('manual') == 'letsencrypt' %}'{{ name }}',{% endfor %}]"
 app_uses_letsencrypt: ssl_enabled and item.value.ssl.provider | default('manual') == 'letsencrypt'
 missing_hosts: "{{ app_hosts | difference((current_hosts.results | selectattr('item.key', 'equalto', item.key) | selectattr('stdout_lines', 'defined') | sum(attribute='stdout_lines', start=[]) | map('trim') | list | join(' ')).split(' ')) }}"
 letsencrypt_cert_ids: "{ {% for item in (generate_cert_ids | default({'results':[{'skipped':True}]})).results if item is not skipped %}'{{ item.item.key }}':'{{ item.stdout }}', {% endfor %} }"
