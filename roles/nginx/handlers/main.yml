@@ -1,3 +1,7 @@
 ---
 - name: reload nginx
   include: reload_nginx.yml
+  
+- name: disable temporary challenge sites
+  import_tasks: disable_challenge_sites.yml
+
