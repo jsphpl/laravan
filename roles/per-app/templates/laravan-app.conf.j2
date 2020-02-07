@@ -27,7 +27,6 @@ server {
   root  {{ webroot }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/{% if item.value.source is defined %}{{ item.value.source.public_dir | default('public') }}{% endif %};
   index index.php index.htm index.html;
   charset utf-8;
-  client_max_body_size {{ php_post_max_size | default('25m') | lower }};
   {% endblock %}
 
   {% block server_auth_basic %}

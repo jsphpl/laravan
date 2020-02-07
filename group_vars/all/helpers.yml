@@ -17,7 +17,7 @@ needs_self_signed_cert: "{{ ssl_enabled and item.value.ssl.provider is defined a
 
 laravel_apps: "{{ apps.values() | flatten | json_query('[? type==`laravel`||type==None]') }}"
 
-app_types: "[{% for item in apps.values() %}'{{ item.type }}',{% endfor %}]"
+app_types: "[{% for item in apps.values() %}'{{ item.type | default('laravel') }}',{% endfor %}]"
 
 
 is_ubuntu: "{{ ansible_distribution == 'Ubuntu' and (ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic') }}"
