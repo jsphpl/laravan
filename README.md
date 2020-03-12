@@ -43,7 +43,7 @@ This makes Laravan a viable alternative to paid tools like Forge or Envoyer. It 
 Ansible needs to be installed on your **local machine** from which you're going to provision your servers and deploy your Laravel apps. Install instructions: [http://docs.ansible.com/ansible/latest/intro_installation.html](http://docs.ansible.com/ansible/latest/intro_installation.html)
 
 ### 2. Prepare Server
-Boot up a fresh Ubuntu 16.04 (virtual) machine. Set up ssh keys for the root user and make sure you can log in from your local machine.
+Boot up a fresh Ubuntu 18.04 (virtual) machine. Set up ssh keys for the root user and make sure you can log in from your local machine.
 
 The target machine needs to have `python` (v2) installed in order to be provisioned by Ansible.
 
@@ -75,7 +75,7 @@ Open up `group_vars/{env}/apps.yml` and provide the necessary information for yo
 Open up `group_vars/{env}/databases.yml` and configure the databases required for your apps. There is an example under `group_vars/production/databases.yml` to get you started.
 
 ### 7. Encrypt vault
-In order to prevent your production secrets from ending up as plain text in your git repositories, use the [ansible vault](http://docs.ansible.com/ansible/2.4/vault.html).
+In order to prevent your production secrets from ending up as plain text in your git repositories, use the [ansible vault](http://docs.ansible.com/ansible/latest/vault.html).
 
 1. Create a `.vault_pass` file containing a strong password in the project root (eg. `openssl rand -base64 64 > .vault_pass`). This file is gitignored, which you should leave at all cost. Your coworkers who need to be able to provision/deploy as well, will need a copy of the file. *Send it to them by other (encrypted) means, but don't add it to your VCS!*
 2. Encrypt your vault: `ansible-vault encrypt group_vars/production/vault.yml`
