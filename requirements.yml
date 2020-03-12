@@ -1,15 +1,10 @@
-- name: logrotate
-  src: nickhammond.logrotate
+- src: nickhammond.logrotate
   version: master
-- name: composer
-  src: geerlingguy.composer
+- src: geerlingguy.composer
   version: 1.6.1
-- name: docker
-  src: geerlingguy.docker
+- src: geerlingguy.docker
   version: 2.5.1
-- name: ntp
-  src: geerlingguy.ntp
+- src: geerlingguy.ntp
   version: 1.5.2
-- name: swapfile
-  src: kamaln7.swapfile
+- src: kamaln7.swapfile
   version: master
