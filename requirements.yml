@@ -7,9 +7,6 @@
 - name: docker
   src: geerlingguy.docker
   version: 2.5.1
-- name: ferm
-  src: debops.ferm
-  version: 1,0.0
 - name: ntp
   src: geerlingguy.ntp
   version: 1.5.2
