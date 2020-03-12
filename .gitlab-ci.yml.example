@@ -1,0 +1,85 @@
+stages:
+  - test
+  - release
+  - coverage
+
+
+.test_template: &test_definition
+  image: jsphpl/php-node-python:7.4
+  services:
+    - postgres:12.1
+    - redis:5
+  variables:
+    POSTGRES_DB: testing
+    POSTGRES_USER: testing
+    POSTGRES_PASSWORD: secret
+  before_script:
+    - composer install
+    - php artisan migrate:fresh --seed --env=testing
+  artifacts:
+    when: on_failure
+    name: log
+    paths:
+      - storage/logs/laravel.log
+
+test:
+  <<: *test_definition
+  stage: test
+  script:
+    - ./vendor/bin/phpunit
+
+coverage:
+  <<: *test_definition
+  stage: coverage
+  only:
+    - master
+  script:
+    # Enable xdebug for coverage report
+    - docker-php-ext-enable xdebug.so
+    - ./vendor/bin/phpunit --coverage-text
+
+
+.release_template: &release_definition
+  stage: release
+  image: jsphpl/ansible-git
+  before_script:
+    # Trust the host key of the deploy target and the gitlab instance
+    - mkdir -m 700 ~/.ssh
+    - ssh-keyscan -H YOUR_APP_SERVER_HOSTNAME_GOES_HERE >> ~/.ssh/known_hosts
+    - ssh-keyscan -H YOUR_GITLAB_SERVER_HOSTNAME_GOES_HERE  >> ~/.ssh/known_hosts
+
+    # Install private key for deployment
+    - echo "$DEPLOY_KEY" > ~/.ssh/id_rsa && chmod 0600 ~/.ssh/id_rsa
+
+    # Start the ssh agent
+    - eval $(ssh-agent -s)
+    - ssh-add ~/.ssh/id_rsa
+  script:
+    - git clone YOUR_LARAVAN_PROJECT_GIT_URL_GOES_HERE laravan
+    - cd laravan
+    - echo "$VAULT_PASS" > .vault_pass
+    - ansible-playbook deploy.yml -e env=$ENVIRONMENT_NAME -e app=YOUR_APP_NAME_GOES_HERE
+  environment:
+    name: $ENVIRONMENT_NAME
+    url: https://$TARGET_HOST
+
+release to staging:
+  <<: *release_definition
+  only:
+    - master
+  variables:
+    VERSION: $CI_COMMIT_SHA
+    TARGET_HOST: YOUR_STAGING_HOSTNAME_GOES_HERE
+    ENVIRONMENT_NAME: staging
+    DEPLOY_KEY: $STAGING_DEPLOY_KEY
+
+release to production:
+  <<: *release_definition
+  only:
+    - /^v\d+\.\d+\.\d+$/  # version tags (vx.y.z)
+  when: manual
+  variables:
+    VERSION: $CI_COMMIT_TAG
+    TARGET_HOST: YOUR_PRODUCTION_HOSTNAME_GOES_HERE
+    ENVIRONMENT_NAME: production
+    DEPLOY_KEY: $PRODUCTION_DEPLOY_KEY

@@ -43,7 +43,7 @@ This makes Laravan a viable alternative to paid tools like Forge or Envoyer. It 
 Ansible needs to be installed on your **local machine** from which you're going to provision your servers and deploy your Laravel apps. Install instructions: [http://docs.ansible.com/ansible/latest/intro_installation.html](http://docs.ansible.com/ansible/latest/intro_installation.html)
 
 ### 2. Prepare Server
-Boot up a fresh Ubuntu 18.04 (virtual) machine. Set up ssh keys for the root user and make sure you can log in from your local machine.
+Boot up a fresh Ubuntu 18.04 machine. Set up ssh keys for the root user and make sure you can log in from your local machine.
 
 The target machine needs to have `python` (v2) installed in order to be provisioned by Ansible.
 
@@ -104,6 +104,23 @@ ansible-playbook deploy.yml -e env=production -e app=myapp
 
 In case deployment fails with an error message indicating a lack of access right to the git repository, make sure that a local ssh key is authorized with the git remote of the app. There could also be a problem with with ssh agent-forwarding, which you can troubleshoot using this guide: [https://developer.github.com/v3/guides/using-ssh-agent-forwarding/](https://developer.github.com/v3/guides/using-ssh-agent-forwarding/).
 
+## Using laravan in your CI/CD pipeline
+In order to use laravan in your CI/CD pipeline, you have to:
+1. Give your CI server access to your laravan repository (with all its configuration in it)
+2. Make the `.vault_pass` available to your CI server
+3. Run the `deploy.yml` playbook in your pipeline in order to deploy the application
+
+### Using laravan with Gitlab Pipelines
+Take a look at [.gitlab-ci.yml.example](.gitlab-ci.yml.example) for an example configuration for Gitlab Pipelines. Make sure to replace all YOUR_xyz_GOES_HERE strings with your actual values.
+
+In order to make it work, configure the following environment variables in gitlab for the project you're deploying:
+- STAGING_DEPLOY_KEY: *an ssh private key that authorizes the `web` user on your staging system*
+- PRODUCTION_DEPLOY_KEY: *an ssh private key that authorizes the `web` user on your production system*
+- VAULT_PASS: *The vault password to decrypt the ansible vault*
+
+Besides that, make sure:
+- the respective "DEPLOY_KEYs" are allowed read access on your application repository and the laravan repository (set them up as deploy keys in the respective Gitlab project)
+- in your `apps.yml` configuration under `source`, set `version: "{{ lookup('env', 'VERSION') }}"` in order to deploy the git revision for which the pipeline is running. Otherwise it would default to master and possibly deploy the wrong version.
 
 ## Credits
 Credits to the awesome [Trellis](https://github.com/roots/trellis) project, which heavily inspired me to create Laravan and from which i copied some code and concepts.
