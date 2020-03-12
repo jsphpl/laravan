@@ -99,7 +99,7 @@ server {
     include fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
     fastcgi_param DOCUMENT_ROOT $realpath_root;
-    fastcgi_pass unix:/var/run/php{{ app_php_version }}-fpm/laravan.sock;
+    fastcgi_pass unix:/var/run/php{{ app_php_version }}-laravan.sock;
     fastcgi_index index.php;
   }
   {% endif -%}

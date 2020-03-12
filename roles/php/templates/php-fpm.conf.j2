@@ -1,7 +1,7 @@
 ; {{ ansible_managed }}
 
-[laravan]
-listen = /var/run/php{{ item }}-fpm/laravan.sock
+[laravan-{{ item }}]
+listen = /var/run/php{{ item }}-laravan.sock
 listen.owner = {{ web_group }}
 listen.group = {{ web_group }}
 user = {{ web_user }}
