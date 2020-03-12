@@ -29,7 +29,7 @@
     - role: docker
       tags: docker
     - role: letsencrypt
-      tags: [letsencrypt, certs]
+      tags: [letsencrypt, certs, per-app]
     - role: databases
       tags: databases
     - role: per-app
