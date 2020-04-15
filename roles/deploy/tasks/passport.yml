@@ -5,7 +5,7 @@
   register: key_file
 
 - name: Generate keys for Laravel Passport
-  shell: php artisan passport:keys
+  shell: "{{ current_php_executable }} artisan passport:keys"
   args:
     chdir: "{{ deploy_helper.new_release_path }}"
   when: not key_file.stat.exists

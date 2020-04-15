@@ -6,7 +6,6 @@ php_versions_required: "{{ php_versions_used | unique }}"
 disable_default_pool: true
 memcached_sessions: false
 
-php_version_default: "7.4"
 php_versions:
   - "7.2"
   - "7.3"

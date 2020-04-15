@@ -5,6 +5,7 @@
   postgresql_user:
     name: "{{ item.user }}"
     password: "{{ item.password }}"
+    expires: infinity
   with_items: "{{ databases }}"
   when: item.type == 'postgres'
 
