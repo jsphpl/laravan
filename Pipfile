@@ -6,7 +6,7 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-ansible = ">=2.6.14,<2.7"
+ansible = ">=2.6.14,<2.11"
 jmespath = "*"
 
 [requires]
